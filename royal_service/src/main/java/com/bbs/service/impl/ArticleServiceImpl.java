@@ -18,4 +18,18 @@ public class ArticleServiceImpl implements ArticleService {
     public List<Article> findAll() {
         return articleDao.findAll();
     }
+
+    @Override
+    public void save(Article article) {
+        articleDao.save(article);
+    }
+
+    @Override
+    public Article findById(Integer articleId) {
+        Article article=articleDao.findById(articleId);
+
+        return article;
+    }
+
+
 }

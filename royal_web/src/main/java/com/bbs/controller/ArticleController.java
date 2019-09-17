@@ -17,7 +17,6 @@ public class ArticleController {
     private ArticleService articleService;
 
     @RequestMapping("/findAll.do")
-    @ResponseBody
     public ModelAndView findAll(){
         ModelAndView mv = new ModelAndView();
         List<Article> list = articleService.findAll();
@@ -25,6 +24,16 @@ public class ArticleController {
         mv.setViewName("index");
         return mv;
     }
+     @RequestMapping("save.do")
+    public  String save(Article article){
+        articleService.save(article);
+        Article article1=articleService.findById(article.getArticleId());
+//         ModelAndView mv = new ModelAndView();
+//         mv.addObject("article",article1);
+//         mv.setViewName("getArticle");
+        return "getArticle?articleId="+article1.getArticleId();
+    }
+
 
 
 }

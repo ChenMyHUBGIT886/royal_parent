@@ -72,15 +72,17 @@
                 </ul>
 
 
-                <form action="#" method="post" enctype="multipart/form-data">
+                <form action="${pageContext.request.contextPath}/userInfo/update.do" method="post" enctype="multipart/form-data">
+
+                    <input type="hidden" name="userId" value="${user.userId}">
                     <ul class="bd">
                         <li class="clearfix">
                             <div class="info-l"><i class="red">*</i>用户名：</div>
-                            <div class="info-r"><input type="text" class="txt" value="" readonly="readonly"/></div>
+                            <div class="info-r"><input type="text" class="txt" value="${user.userName}" readonly="readonly"/></div>
                         </li>
                         <li class="clearfix">
                             <div class="info-l">邮箱地址：</div>
-                            <div class="info-r"><input type="text" name="email" class="txt" value=""/></div>
+                            <div class="info-r"><input type="text" name="email" class="txt" value="${user.email}"/></div>
                         </li>
                         <li class="clearfix">
                             <div class="info-l">上传头像：</div>
@@ -89,8 +91,8 @@
                         <li class="clearfix">
                             <div class="info-l"></div>
                             <div class="info-r">
-                                <input type="submit" class="btn" value="保存"/>
-                                <span style="color:red;">修改成功！</span>
+                                <input type="submit" id="btn" value="保存"/>
+
                             </div>
                         </li>
                     </ul>
@@ -108,7 +110,11 @@
 <!-- 底部 -->
 <jsp:include page="common/footer.jsp"/>
 
-
+ <script>
+     $("#btn").click(function () {
+        alert("修改成功") 
+     })
+ </script>
 
 </body>
 </html>

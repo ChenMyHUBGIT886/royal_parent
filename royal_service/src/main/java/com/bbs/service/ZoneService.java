@@ -4,5 +4,5 @@ import com.bbs.domain.Zone;
 
 public interface ZoneService {
 
-    Zone findAll(Integer zoneId);
+    Zone findById(Integer zoneId);
 }

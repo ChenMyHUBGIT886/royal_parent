@@ -28,6 +28,7 @@ public class Article implements Serializable {
     private Integer replyCount; //评论数
     private Integer upvoteCount; //点赞数
     private Integer browseCount; //浏览数
+    private Integer ZoneId;    //所在交流区
     private Integer isReport ; //举报状态
     private List<Comment> comments; //评论
 
@@ -111,8 +112,13 @@ public class Article implements Serializable {
         this.browseCount = browseCount;
     }
 
+    public Integer getZoneId() {
+        return ZoneId;
+    }
 
-
+    public void setZoneId(Integer zoneId) {
+        ZoneId = zoneId;
+    }
 
     public Integer getIsReport() {
         return isReport;
@@ -127,13 +133,16 @@ public class Article implements Serializable {
         return "Article{" +
                 "articleId=" + articleId +
                 ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
                 ", sendTime=" + sendTime +
                 ", senderName='" + senderName + '\'' +
                 ", isTop=" + isTop +
                 ", replyCount=" + replyCount +
                 ", upvoteCount=" + upvoteCount +
                 ", browseCount=" + browseCount +
+                ", ZoneId=" + ZoneId +
                 ", isReport=" + isReport +
+                ", comments=" + comments +
                 '}';
     }
 }

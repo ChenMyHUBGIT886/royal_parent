@@ -12,8 +12,8 @@ public class ZoneServiceImpl implements ZoneService {
     private  ZoneDao zoneDao;
 //根据Id查询zone
     @Override
-    public Zone findAll(Integer zoneId) {
-        Zone zone= zoneDao.findAll(zoneId);
+    public Zone findById(Integer zoneId) {
+        Zone zone= zoneDao.findById(zoneId);
         return zone;
     }
 }

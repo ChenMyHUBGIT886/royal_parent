@@ -124,7 +124,9 @@
 </div>
 
 <!-- 发帖弹出框 -->
-<form action="" method="post">
+<form action="${pageContext.request.contextPath}/article/save.do" method="post" >
+    <input type="hidden" name="senderName" value="${userInfo.userName}">
+    <input type="hidden" name="zoneId" value="${zone.zoneId}">
     <div class="pop-box ft-box">
         <div class="mask"></div>
         <div class="win">
@@ -149,6 +151,16 @@
 </form>
 
 </body>
+<script>
+    $(function () {
+        $("#btn").click(function () {
+            if(${empty userInfo }){
+                alert("请先登录")
+                location.href="${pageContext.request.contextPath}/register.jsp"
+            }
+        })
+    })
+</script>
 <%--<script>
     $(function () {
         $.ajax({

@@ -18,5 +18,5 @@ public interface ZoneDao {
             @Result(property = "isDef",column = "isDef"),
             @Result(property = "articles",javaType = List.class,column = "zoneId",many=@Many(select = "com.bbs.dao.ArticleDao.findByZoneid"))
     })
-    Zone findAll(Integer zoneId);
+    Zone findById(Integer zoneId);
 }

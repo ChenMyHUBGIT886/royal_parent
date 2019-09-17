@@ -7,4 +7,6 @@ public interface UserDao {
 
     @Select("select * from bbs_user_table where userName = #{userName}")
     UserInfo login(UserInfo userInfo);
+
+
 }
