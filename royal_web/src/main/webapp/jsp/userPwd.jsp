@@ -67,7 +67,7 @@
                     <li><a href="getUser.do?method=userInfo">个人信息</a></li>
                     <li class="cur"><a href="getUser.do?method=userPwd">修改密码</a></li>
                 </ul>
-                <form action="#" method="post">
+                <form action="${pageContext.request.contextPath}/userInfo/updatePwd.do" method="post">
                   <ul class="bd">
                     <li class="clearfix">
                         <div class="info-l"><i class="red">*</i>旧密码：</div>
@@ -80,8 +80,8 @@
                     <li class="clearfix">
                         <div class="info-l"></div>
                         <div class="info-r">
-						  <input type="submit" class="btn" value="保存"/>
-						  <span style="color:red;">修改成功！</span>
+						  <input type="submit" id="btn" value="保存"/>
+
 						</div>
                     </li>
                   </ul>
@@ -93,6 +93,11 @@
 
 <!-- 底部 -->
 <jsp:include page="common/footer.jsp"/>
+<script>
+    $("#btn").click(function () {
+        alert("修改成功")
+    })
+</script>
 
 
 </body>

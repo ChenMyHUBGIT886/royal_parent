@@ -13,7 +13,7 @@
     <context:component-scan base-package="com.bbs.manage.controller"/>
     <!--视图解析器-->
     <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="prefix" value="/jsp/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
 

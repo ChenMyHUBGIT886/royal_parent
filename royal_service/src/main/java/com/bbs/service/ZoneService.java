@@ -2,7 +2,9 @@ package com.bbs.service;
 
 import com.bbs.domain.Zone;
 
+import java.util.List;
+
 public interface ZoneService {
 
-    Zone findAll(Integer zoneId);
+    List<Zone> findAll();
 }
