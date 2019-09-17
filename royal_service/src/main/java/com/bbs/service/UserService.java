@@ -14,4 +14,6 @@ public interface UserService {
     void changeRole(Integer id, Integer role) throws Exception;
 
     void changeTalkStatus(Integer id, Integer talkStatus) throws Exception;
+
+    UserInfo login(UserInfo userInfo);
 }

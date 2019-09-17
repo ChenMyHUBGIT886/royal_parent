@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -17,14 +18,14 @@ import java.util.List;
 public class ZoneController {
     @Autowired
     private ZoneService zoneService;
-//此方法是登陆首页查询zone表第一条zone数据，内部有一个article集合，在下面展示
+    @Autowired
+    private ArticleController articleController;
+
     @RequestMapping("/findAll.do")
-    public ModelAndView findAll(){
-        ModelAndView mv = new ModelAndView();
-        Integer zoneId=1;
-        Zone zone =zoneService.findAll(zoneId);
-        mv.addObject("zone",zone);
-        mv.setViewName("index");
+    public ModelAndView findAll(HttpServletRequest request){
+        List<Zone> list = zoneService.findAll();
+        request.getSession().setAttribute("zoneList",list);
+        ModelAndView mv = articleController.findByZoneId(1);
         return mv;
     }
 }

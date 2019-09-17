@@ -48,41 +48,64 @@
 
         <!-- 导航 -->
         <ul class="hm-bbs-nav border-lrb clearfix">
-            <li class="current">
-                <a href="#"><em></em>综合交流区</a>
-            </li>
-            <li>
-                <a href="#"><em></em>BUG反馈区</a>
-            </li>
-            <li>
-                <a href="#"><em></em>新闻公告区</a>
-            </li>
-            <li>
-                <a href="#"><em></em>活动专区</a>
-            </li>
-        </ul>
+            <c:forEach items="${zoneList}" var="zone">
 
+                <c:if test="${zone.zoneId==articleList[0].zoneId}">
+                    <li class="current">
+                        <a href="${pageContext.request.contextPath}/article/findByZoneId.do?zoneId=${zone.zoneId}"><em></em>${zone.zoneName}</a>
+                    </li>
+                </c:if>
+
+                <c:if test="${zone.zoneId!=articleList[0].zoneId}">
+                    <li>
+                        <a href="${pageContext.request.contextPath}/article/findByZoneId.do?zoneId=${zone.zoneId}"><em></em>${zone.zoneName}</a>
+                    </li>
+                </c:if>
+
+            </c:forEach>
+        </ul>
 
         <!-- 主体部分 -->
         <div class="hm-bbs-main border-lrb clearfix">
             <!-- 左侧列表 -->
             <div class="list-view l">
                 <ul>
-                    <c:forEach items="${zone.articles}" var="article">
-                        <li class="clearfix ding">
-                            <div class="hm-index-title">
-                                <i class="set-to-top">顶</i> <a href="getArticle.do">${article.title}</a>
-                            </div>
-                            <div class="hm-index-con">${article.content}</div>
-                            <div class="hm-index-info l">
-                                <span class="article-username">${article.senderName}</span>
-                                <span class="post-time">${article.sendTime}</span>
-                            </div>
-                            <div class="hm-index-fun r">
-                                <span class="icon-like"><i></i>1</span>
-                                <span class="icon-talk"><i></i>0</span>
-                            </div>
-                        </li>
+<%--                    帖子显示列表--%>
+                    <c:forEach items="${articleList}" var="article">
+                        <c:if test="${article.isTop==1}">
+                             <li class="clearfix ding">
+                                <div class="hm-index-title">
+                                    <i class="set-to-top">顶</i> <a href="${pageContext.request.contextPath}/article/getArticle.do?articleId=${article.articleId}">${article.title}</a>
+                                </div>
+                                 <div class="hm-index-con">${article.content}</div>
+                                 <div class="hm-index-info l">
+                                     <span class="article-username">${article.senderName}</span>
+                                     <span class="post-time">${article.sendTimeStr}</span>
+                                 </div>
+                                 <div class="hm-index-fun r">
+                                     <span class="icon-like"><i></i>1</span>
+                                     <span class="icon-talk"><i></i>0</span>
+                                 </div>
+                             </li>
+                         </c:if>
+
+                        <c:if test="${article.isTop!=1}">
+                            <li>
+                                <div class="hm-index-title">
+                                    <a href="getArticle.do">${article.title}</a>
+                                </div>
+                                <div class="hm-index-con">${article.content}</div>
+                                <div class="hm-index-info l">
+                                    <span class="article-username">${article.senderName}</span>
+                                    <span class="post-time">${article.sendTimeStr}</span>
+                                </div>
+                                <div class="hm-index-fun r">
+                                    <span class="icon-like"><i></i>1</span>
+                                    <span class="icon-talk"><i></i>0</span>
+                                </div>
+                            </li>
+                        </c:if>
+
                     </c:forEach>
                 </ul>
             </div>
@@ -96,11 +119,11 @@
                     </h3>
                     <ul class="b clearfix">
                         <li>
-                            <div><img src="images/default.png" height="55"/></div>
+                            <div><img src="../images/default.png" height="55"/></div>
                             <p>Mr.King</p>
                         </li>
                         <li>
-                            <div><img src="images/default.png" height="55"/></div>
+                            <div><img src="../images/default.png" height="55"/></div>
                             <p>疯子</p>
                         </li>
                     </ul>
@@ -124,7 +147,9 @@
 </div>
 
 <!-- 发帖弹出框 -->
-<form action="" method="post">
+<form action="${pageContext.request.contextPath}/article/save.do" method="post" >
+    <input type="hidden" name="senderName" value="${userInfo.userName}">
+    <input type="hidden" name="zoneId" value="${zone.zoneId}">
     <div class="pop-box ft-box">
         <div class="mask"></div>
         <div class="win">
@@ -149,19 +174,19 @@
 </form>
 
 </body>
-<%--<script>
+
+
+<script>
     $(function () {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/article/findAll.do",
-            dataType: "json",
-            type: "GET",
-            contentType: "json/application;charset=utf-8",
-            success: function (data) {
-                alert(data);
+        $("#btn").click(function () {
+            if(${empty userInfo }){
+                alert("请先登录")
+                location.href="${pageContext.request.contextPath}/register.jsp"
             }
         })
     })
+</script>
 
 
-</script>--%>
+
 </html>

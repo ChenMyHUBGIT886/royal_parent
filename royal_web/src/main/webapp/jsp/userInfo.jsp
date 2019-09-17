@@ -28,7 +28,7 @@
     <div class="hm-inner clearfix">
         <div class="hm-header-t clearfix">
             <h1 class="logo l">
-                <a href="javascript:;"><img src="images/logo.png" height="64" width="168" alt=""/></a>
+                <a href="javascript:;"><img src="../images/logo.png" height="64" width="168" alt=""/></a>
             </h1>
             <div class="search-box l">
                 <form action="javascript:;">
@@ -54,8 +54,8 @@
             <!--左侧用户名，头像-->
             <div class="user-info-l l">
                 <div class="user-info-l-t">
-                    <img src="images/default.png"/>
-                    <div class="username">张无忌</div>
+                    <img src="${user.picUrl}"/>
+                    <div class="username">${user.userName}</div>
                 </div>
                 <ul class="user-info-l-b">
                     <li class="cur"><i class="info-icon"></i>我的资料</li>
@@ -72,15 +72,17 @@
                 </ul>
 
 
-                <form action="#" method="post" enctype="multipart/form-data">
+                <form action="${pageContext.request.contextPath}/userInfo/update.do" method="post" enctype="multipart/form-data">
+
+                    <input type="hidden" name="userId" value="${user.userId}">
                     <ul class="bd">
                         <li class="clearfix">
                             <div class="info-l"><i class="red">*</i>用户名：</div>
-                            <div class="info-r"><input type="text" class="txt" value="" readonly="readonly"/></div>
+                            <div class="info-r"><input type="text" class="txt" value="${user.userName}" readonly="readonly"/></div>
                         </li>
                         <li class="clearfix">
                             <div class="info-l">邮箱地址：</div>
-                            <div class="info-r"><input type="text" name="email" class="txt" value=""/></div>
+                            <div class="info-r"><input type="text" name="email" class="txt" value="${user.email}"/></div>
                         </li>
                         <li class="clearfix">
                             <div class="info-l">上传头像：</div>
@@ -89,8 +91,8 @@
                         <li class="clearfix">
                             <div class="info-l"></div>
                             <div class="info-r">
-                                <input type="submit" class="btn" value="保存"/>
-                                <span style="color:red;">修改成功！</span>
+                                <input type="submit" id="btn" value="保存"/>
+
                             </div>
                         </li>
                     </ul>
@@ -108,7 +110,11 @@
 <!-- 底部 -->
 <jsp:include page="common/footer.jsp"/>
 
-
+ <script>
+     $("#btn").click(function () {
+        alert("修改成功") 
+     })
+ </script>
 
 </body>
 </html>

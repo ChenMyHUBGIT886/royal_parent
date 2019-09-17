@@ -44,4 +44,9 @@ public class UserServiceImpl implements UserService {
     public void changeTalkStatus(Integer id, Integer talkStatus) throws Exception {
         userDao.changeTalkStatus(id,talkStatus);
     }
+
+    @Override
+    public UserInfo login(UserInfo userInfo) {
+        return userDao.login(userInfo);
+    }
 }

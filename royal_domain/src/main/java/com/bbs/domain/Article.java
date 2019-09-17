@@ -1,5 +1,7 @@
 package com.bbs.domain;
 
+import com.bbs.utils.DateUtils;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -23,13 +25,41 @@ public class Article implements Serializable {
     private String title; //标题
     private String content; //内容
     private Date sendTime; //发送时间
+    private String sendTimeStr;
     private String senderName; //发送人编号
+    private UserInfo userInfo; //发帖人
     private Integer isTop; //是否置顶，如果是0，代表不置顶；如果是1，代表置顶
     private Integer replyCount; //评论数
     private Integer upvoteCount; //点赞数
     private Integer browseCount; //浏览数
+    private Integer zoneId;//所在交流区
     private Integer isReport ; //举报状态
     private List<Comment> comments; //评论
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
+    }
+
+    public String getSendTimeStr() {
+        sendTimeStr = DateUtils.date2String(sendTime,"yyyy-MM-dd HH-mm-ss");
+        return sendTimeStr;
+    }
+
+    public void setSendTimeStr(String sendTimeStr) {
+        this.sendTimeStr = sendTimeStr;
+    }
+
+    public Integer getZoneId() {
+        return zoneId;
+    }
+
+    public void setZoneId(Integer zoneId) {
+        this.zoneId = zoneId;
+    }
 
     public String getContent() {
         return content;
@@ -127,13 +157,16 @@ public class Article implements Serializable {
         return "Article{" +
                 "articleId=" + articleId +
                 ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
                 ", sendTime=" + sendTime +
                 ", senderName='" + senderName + '\'' +
                 ", isTop=" + isTop +
                 ", replyCount=" + replyCount +
                 ", upvoteCount=" + upvoteCount +
                 ", browseCount=" + browseCount +
+                ", ZoneId=" + ZoneId +
                 ", isReport=" + isReport +
+                ", comments=" + comments +
                 '}';
     }
 }

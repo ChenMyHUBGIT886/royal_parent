@@ -18,4 +18,6 @@ public interface UserDao {
     List<UserInfo> findByPage();
     @Update("update bbs_user_table set talkStatus=#{talkStatus}  where userId=#{id} ")
     void changeTalkStatus(@Param("id")Integer id,  @Param("talkStatus")Integer talkStatus);
+
+
 }
