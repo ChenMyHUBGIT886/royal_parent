@@ -8,11 +8,18 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
-@Autowired
+
+    @Autowired
     private RegisterDao registerDao;
 
     @Override
     public void save(UserInfo userInfo) {
         registerDao.save(userInfo);
     }
+
+    @Override
+    public UserInfo findByName(String userName) {
+        return registerDao.findByName(userName);
+    }
+
 }

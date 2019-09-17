@@ -44,14 +44,14 @@
         <div class="reg-box">
             <h2>用户注册<span>（红色型号代表必填）</span></h2>
             <div class="reg-info">
-                <form action="${pageContext.request.contentType}/user/register.do" method="post" id="registerFrom">
+                <form action="${pageContext.request.contentType}/register/register.do" method="post" id="registerFrom">
                     <ul>
                         <li>
                             <div class="reg-l">
                                 <span class="red">*</span> 用户名：
                             </div>
                             <div class="reg-c">
-                                <input type="text" id="userName" name="userName" class="txt" value=""/>
+                                <input type="text" id="username" name="username" class="txt" />
                             </div>
                             <span class="tips">用户名必须是由英文、数字、下划线组成</span>
                         </li>
@@ -60,14 +60,14 @@
                                 <span class="red">*</span> 密&nbsp;&nbsp;&nbsp;码：
                             </div>
                             <div class="reg-c">
-                                <input type="password" id="userPass" name="userPass" class="txt" value=""/>
+                                <input type="password" id="userpass" name="userpass" class="txt" />
                             </div>
                             <span class="tips">密码长度必须6~10位的英文或数字</span>
                         </li>
                         <li class="no-tips">
                             <div class="reg-l">&nbsp;&nbsp;邮&nbsp;&nbsp;&nbsp;箱：</div>
                             <div class="reg-c">
-                                <input type="text" id="email" name="email" class="txt" value=""/>
+                                <input type="text" id="email" name="email" class="txt" />
                             </div>
                         </li>
                         <li>
@@ -90,38 +90,67 @@
 
 <%--表单校验--%>
 <script>
-    $(function () {
-        $("#registerFrom").validate({
-            rules: {
-                userName: {
-                    required: true,
-                    rangelength: [3, 10]
-                },
-                userPass: {
-                    required: true,
-                    rangelength: [3, 10]
-                },
-                email: {
-                    required: true,
-                    rangelength: [10, 20]
-                }
-            },
-            messages: {
-                userName: {
-                    required: "用户名必填",
-                    rangelength: "用户名在{0}位-{1}位之间"
-                },
-                userPass: {
-                    required: "密码必填",
-                    rangelength: "用户名在{0}位-{1}位之间"
-                },
-                email: {
-                    required: "用户名必填",
-                    rangelength: "请输入正确的邮箱号"
-                }
+    <%--//检验用户名--%>
+
+    function checkUserName() {
+        var username = $("#username").val();
+        var reg_username = /^\w{3,20}$/;
+        // alert(username);
+        var flag = reg_username.test(username);
+        if (flag) {
+            if (username) {
+                $.ajax({
+                    type: "post",
+                    url: "${pageContext.request.contentType}/register/query.do",
+                    // contentType: "application/json;charset=utf-8",
+                    data: $("#registerFrom").serialize(),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data!=null){
+                            alert("用户名已经被注册")
+                        }
+
+                    }
+                })
             }
+        } else {
+            alert("请输入用户名");
+            return flag;
+        }
+
+    }
+    function checkUserPass() {
+        var userpass = $("#userpass").val();
+        var reg_userpass = /^\w{3,20}$/;
+        var flag1 = reg_userpass.test(userpass);
+        if (flag1) {
+            if (userpass) {
+            }
+        } else {
+            alert("请输入密码");
+            return flag1;
+        }
+
+    }
+
+    $(function () {
+        $("#registerFrom").submit(function () {
+            return checkUserName() ;
         });
+        $("#registerFrom").submit(function () {
+            return checkUserPass()  ;
+        });
+
+        // $("#username").blur(function () {
+        //   return checkUserName();
+        // })
+        $("#username").blur(checkUserName);
+        $("#userpass").blur(checkUserName);
+        // $("#userpass").blur(function () {
+        //   return checkUserPass();
+        // })
     })
+
 
 </script>
 
