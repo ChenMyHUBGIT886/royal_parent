@@ -52,7 +52,13 @@
             data:$("#login_form").serialize(),
             dataType:"json",
             success:function (data) {
-
+               if (data.msg == 0){
+                   location.href = "${pageContext.request.contextPath}/jsp/main.jsp"
+               }else if(data.msg == 1) {
+                   alert("没有权限");
+               }else if (data.msg == 2) {
+                   alert("账号或密码错误");
+               }
             }
 
         })
