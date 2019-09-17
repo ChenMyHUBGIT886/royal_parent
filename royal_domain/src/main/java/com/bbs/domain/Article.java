@@ -28,8 +28,17 @@ public class Article implements Serializable {
     private Integer replyCount; //评论数
     private Integer upvoteCount; //点赞数
     private Integer browseCount; //浏览数
+    private Integer zoneId;//所在交流区
     private Integer isReport ; //举报状态
     private List<Comment> comments; //评论
+
+    public Integer getZoneId() {
+        return zoneId;
+    }
+
+    public void setZoneId(Integer zoneId) {
+        this.zoneId = zoneId;
+    }
 
     public String getContent() {
         return content;

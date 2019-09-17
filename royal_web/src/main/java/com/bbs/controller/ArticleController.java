@@ -25,6 +25,12 @@ public class ArticleController {
         mv.setViewName("index");
         return mv;
     }
-
-
+@RequestMapping("/findByZoneId.do")
+    public ModelAndView findByZoneId(Integer zoneId) {
+        List<Article> list = articleService.findByZoneId(zoneId);
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("articleList",list);
+        mv.setViewName("index");
+        return mv;
+    }
 }

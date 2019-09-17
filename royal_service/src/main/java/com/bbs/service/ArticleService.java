@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ArticleService {
     List<Article> findAll();
+
+    List<Article> findByZoneId(Integer zoneId);
 }

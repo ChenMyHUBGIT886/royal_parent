@@ -18,4 +18,9 @@ public class ArticleServiceImpl implements ArticleService {
     public List<Article> findAll() {
         return articleDao.findAll();
     }
+
+    @Override
+    public List<Article> findByZoneId(Integer zoneId) {
+        return articleDao.findByZoneId(zoneId);
+    }
 }

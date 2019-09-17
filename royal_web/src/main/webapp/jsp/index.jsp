@@ -28,7 +28,7 @@
         <!--头部，帖子统计，搜索-->
         <div class="hm-bbs-info">
             <div class="hm-bbs-icon l" style="width:130px;">
-                <span><img src="images/bbs-icon.png" height="80"/></span>
+                <span><img src="../images/bbs-icon.png" height="80"/></span>
             </div>
             <div class="hm-bbs-info-in l" style="margin-left:30px;">
                 <div class="t clearfix"><h2 class="l">王者荣耀</h2></div>
@@ -48,27 +48,29 @@
 
         <!-- 导航 -->
         <ul class="hm-bbs-nav border-lrb clearfix">
-            <li class="current">
-                <a href="#"><em></em>综合交流区</a>
-            </li>
-            <li>
-                <a href="#"><em></em>BUG反馈区</a>
-            </li>
-            <li>
-                <a href="#"><em></em>新闻公告区</a>
-            </li>
-            <li>
-                <a href="#"><em></em>活动专区</a>
-            </li>
-        </ul>
+            <c:forEach items="${zoneList}" var="zone">
 
+                <c:if test="${zone.zoneId==articleList[0].zoneId}">
+                    <li class="current">
+                        <a href="${pageContext.request.contextPath}/article/findByZoneId.do?zoneId=${zone.zoneId}"><em></em>${zone.zoneName}</a>
+                    </li>
+                </c:if>
+
+                <c:if test="${zone.zoneId!=articleList[0].zoneId}">
+                    <li>
+                        <a href="${pageContext.request.contextPath}/article/findByZoneId.do?zoneId=${zone.zoneId}"><em></em>${zone.zoneName}</a>
+                    </li>
+                </c:if>
+
+            </c:forEach>
+        </ul>
 
         <!-- 主体部分 -->
         <div class="hm-bbs-main border-lrb clearfix">
             <!-- 左侧列表 -->
             <div class="list-view l">
                 <ul>
-                    <c:forEach items="${zone.articles}" var="article">
+                    <c:forEach items="${articleList}" var="article">
                         <li class="clearfix ding">
                             <div class="hm-index-title">
                                 <i class="set-to-top">顶</i> <a href="getArticle.do">${article.title}</a>
@@ -96,11 +98,11 @@
                     </h3>
                     <ul class="b clearfix">
                         <li>
-                            <div><img src="images/default.png" height="55"/></div>
+                            <div><img src="../images/default.png" height="55"/></div>
                             <p>Mr.King</p>
                         </li>
                         <li>
-                            <div><img src="images/default.png" height="55"/></div>
+                            <div><img src="../images/default.png" height="55"/></div>
                             <p>疯子</p>
                         </li>
                     </ul>
@@ -149,19 +151,12 @@
 </form>
 
 </body>
-<%--<script>
-    $(function () {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/article/findAll.do",
-            dataType: "json",
-            type: "GET",
-            contentType: "json/application;charset=utf-8",
-            success: function (data) {
-                alert(data);
-            }
-        })
-    })
+
+<script>
+
+    <%--alert("${zone.zoneId == article.zoneId}");--%>
+
+</script>
 
 
-</script>--%>
 </html>

@@ -9,6 +9,7 @@ public interface ArticleDao {
 
     @Select("select * from bbs_article_table")
     List<Article> findAll();
+
     @Select("select * from bbs_article_table where zoneId=#{id}")
-    List<Article> findByZoneid(Integer id);
+    List<Article> findByZoneId(Integer id);
 }
