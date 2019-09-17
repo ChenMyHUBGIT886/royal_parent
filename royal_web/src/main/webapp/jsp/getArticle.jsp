@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,8 +18,7 @@
 
 
 <!-- 头部 -->
-<jsp:include page="common/header.jsp" />
-
+<jsp:include page="common/header.jsp"/>
 
 
 <div class="hm-header"></div>
@@ -86,7 +85,18 @@
                             </div>
                             <div class="floor-ans"></div>
                         </div>
-                        <span class="icon-comment"><a href="#comment"> <i></i> 评论</a></span>
+
+
+                        <%--<img src="../images/qw.png" id="myUpVote">--%>
+                        <span class="hm-detail-fun l">
+                            <span class="icon-like" id="myUpVote"><a href="#"><i></i>点赞</a></span>
+                        </span>
+
+                        <span>
+
+                            <span class="icon-comment"><a href="#comment"> <i></i> 评论</a></span>
+                        </span>
+
                     </div>
                 </li>
 
@@ -131,7 +141,7 @@
                 <!--二楼-->
                 <li class="floor clearfix">
                     <div class="floorer-info l">
-                        <div class="floorer-photo"><img src="images/default.png"/> </div>
+                        <div class="floorer-photo"><img src="images/default.png"/></div>
                         <div class="floorer-name">不哭不闹不炫耀</div>
                     </div>
                     <div class="floor-con l">
@@ -227,10 +237,8 @@
 </div>
 
 
-
 <!-- 底部 -->
 <jsp:include page="common/footer.jsp"/>
-
 
 
 <!-- 回复弹出框 -->
@@ -250,7 +258,7 @@
             <div class="win_ft">
                 <div class="win_ft_in">
                     <input type="submit" class="btn" value="回复"/>
-					<input type="hidden" id="commentId" name="commentId"/>
+                    <input type="hidden" id="commentId" name="commentId"/>
                 </div>
             </div>
         </div>
@@ -258,26 +266,110 @@
 </form>
 
 
-
 <div class="fixedBar" id="j_fixedBar">
     <a href="#comment" class="newTopic"><span></span>回复</a>
     <a href="#" class="goTop"><i></i><span>返回<br/>顶部</span></a>
 </div>
 
+<a href="${pageContext.request.contextPath}/Test/test.do">赋值</a>
 
 </body>
 
 <script type="text/javascript">
-//弹出回复框
-function showDialog(num, commentId) {
-	var loginUser = "${loginUser}";
-	if(!loginUser){
-		alert("请登录");
-		return;
-	}
-	$("#commentId").val(commentId);
-    $('.pop-box').css('display', 'block');
-    $("#floorSpan").html(num);
-}
+    //弹出回复框
+    function showDialog(num, commentId) {
+        var loginUser = "${loginUser}";
+        if (!loginUser) {
+            alert("请登录");
+            return;
+        }
+        $("#commentId").val(commentId);
+        $('.pop-box').css('display', 'block');
+        $("#floorSpan").html(num);
+    }
+</script>
+
+<script>
+
+    //1：判断是否有用户登录
+    $(function () {
+        //  a.没有用户登录的时候，点击爱心按钮就提示先登录
+        if (${empty sessionScope.userbaojia}) {
+            $("#myUpVote").click(function () {
+                alert("请先登录~")
+            })
+        } else {
+            // alert("有用户登录")
+            <%--alert("${upvote.upvoteArticleId}")--%>
+            //b.有用户登录的时候，判断upvote对象是否有值
+            //a:没有值的时候，爱心显示空心，点击爱心发送ajax请求到后台保存upvote对象到upvote表中
+            //最后刷新页面
+            if (${empty upvote.upvoteUserName}) {
+                $("#myUpVote").click(function () {
+                    // alert("无值的时候")
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/upVote/saveByBean.do",
+                        contentType:"application/json;charset=UTF-8",
+                        data: '{"upvoteUserName": "${userbaojia.userName}", "upvoteArticleId": ${comment.articleId}, "isUpvote": 1}',
+                        dataType: "json",
+                        type: "post",
+                        success: function (d) {
+                            // alert("ajax成功")
+                            $("#myUpVote").attr("class","icon-liked")
+                            location.reload()
+                        }
+                    })
+                })
+            }
+            //当有值的时候
+            else if (${not empty upvote.upvoteUserName}) {
+                // alert("有值的时候")
+                <%--alert("当前值为：${upvote.isUpvote}")--%>
+                //a:判断isupvote是否为1，为1的时候说明已点赞，爱心显示实心，再次点赞爱心便变回空心，发送ajax到后台
+                //         根据登录用户和帖子编号更新upvote表中isupvote的值，最后刷新页面
+                if (${upvote.isUpvote == 1}) {
+                    // alert("isupvote为1的时候")
+                    $("#myUpVote").attr("class","icon-liked")
+                    $("#myUpVote").click(function() {
+                        // alert("按钮被点击了")
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/upVote/changeIsUpvote.do",
+                            contentType:"application/json;charset=UTF-8",
+                            <%--data: '{"upvoteUserName": "${userbaojia.userName}", "upvoteArticleId": ${comment.articleId}, "isUpvote": 0}',--%>
+                            data:'{"upvoteUserName":"${upvote.upvoteUserName}","upvoteArticleId":${upvote.upvoteArticleId},"isUpvote": 0}',
+                            dataType:"json",
+                            type:"post",
+                            success:function (d) {
+                                alert(d.isUpvote)
+                                $("#myUpVote").attr("class","icon-like")
+                                location.reload()
+                            }
+                        })
+                    })
+                }
+                // b:为0的时候说明未点赞，爱心显示空心，点击点赞按钮，爱心变成实心，发送ajax到后台
+                //    更新upvote表中的isupvote的值，最后刷新页面
+                else if(${upvote.isUpvote == 0}) {
+                    // alert("isupvote为0的时候")
+                    $("#myUpVote").click(function() {
+                        // alert("按钮被点击了")
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/upVote/changeIsUpvote.do",
+                            contentType:"application/json;charset=UTF-8",
+                            <%--data: '{"upvoteUserName": "${userbaojia.userName}", "upvoteArticleId": ${comment.articleId}, "isUpvote": 0}',--%>
+                            data:'{"upvoteUserName":"${upvote.upvoteUserName}","upvoteArticleId":${upvote.upvoteArticleId},"isUpvote": 1}',
+                            dataType:"json",
+                            type:"post",
+                            success:function (d) {
+                                // alert(d.isUpvote)
+                                $("#myUpVote").attr("class","icon-liked")
+                                location.reload()
+                            }
+                        })
+                    })
+                }
+            }
+        }
+    })
 </script>
 </html>
