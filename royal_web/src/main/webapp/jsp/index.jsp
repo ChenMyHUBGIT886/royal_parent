@@ -70,21 +70,42 @@
             <!-- 左侧列表 -->
             <div class="list-view l">
                 <ul>
+<%--                    帖子显示列表--%>
                     <c:forEach items="${articleList}" var="article">
-                        <li class="clearfix ding">
-                            <div class="hm-index-title">
-                                <i class="set-to-top">顶</i> <a href="getArticle.do">${article.title}</a>
-                            </div>
-                            <div class="hm-index-con">${article.content}</div>
-                            <div class="hm-index-info l">
-                                <span class="article-username">${article.senderName}</span>
-                                <span class="post-time">${article.sendTime}</span>
-                            </div>
-                            <div class="hm-index-fun r">
-                                <span class="icon-like"><i></i>1</span>
-                                <span class="icon-talk"><i></i>0</span>
-                            </div>
-                        </li>
+                        <c:if test="${article.isTop==1}">
+                             <li class="clearfix ding">
+                                <div class="hm-index-title">
+                                    <i class="set-to-top">顶</i> <a href="${pageContext.request.contextPath}/article/getArticle.do?articleId=${article.articleId}">${article.title}</a>
+                                </div>
+                                 <div class="hm-index-con">${article.content}</div>
+                                 <div class="hm-index-info l">
+                                     <span class="article-username">${article.senderName}</span>
+                                     <span class="post-time">${article.sendTimeStr}</span>
+                                 </div>
+                                 <div class="hm-index-fun r">
+                                     <span class="icon-like"><i></i>1</span>
+                                     <span class="icon-talk"><i></i>0</span>
+                                 </div>
+                             </li>
+                         </c:if>
+
+                        <c:if test="${article.isTop!=1}">
+                            <li>
+                                <div class="hm-index-title">
+                                    <a href="getArticle.do">${article.title}</a>
+                                </div>
+                                <div class="hm-index-con">${article.content}</div>
+                                <div class="hm-index-info l">
+                                    <span class="article-username">${article.senderName}</span>
+                                    <span class="post-time">${article.sendTimeStr}</span>
+                                </div>
+                                <div class="hm-index-fun r">
+                                    <span class="icon-like"><i></i>1</span>
+                                    <span class="icon-talk"><i></i>0</span>
+                                </div>
+                            </li>
+                        </c:if>
+
                     </c:forEach>
                 </ul>
             </div>
