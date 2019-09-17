@@ -23,11 +23,69 @@ public class UserInfo implements Serializable {
     private String email; //邮箱
     private String picUrl; //头像
     private Integer role; //1代表普通用户；2代表高级用户，3代表超级管理员
+    private String roleStr;
     private Date lastLoginTime; //最后登录时间
     private Integer loginStatus; //登录状态，0代表未登录，1代表已登录
+    private String loginStatusStr;
     private Integer talkStatus; //发言状态，0代表未屏蔽发言（默认），1代表已屏蔽发言',
+    private String talkStatusStr ="未屏蔽发言";;
     private Integer isupdating; //申请升级(0-未申请,1-已申请)
+    private String isupdatingStr;
     private Integer updateStatus; //申请升级审核状态(0-未处理,1-已处理)'
+    private String updateStatusStr;
+
+    public String getRoleStr() {
+
+        if (role==1){
+            roleStr ="普通用户";
+        }else if (role==2){
+            roleStr ="高级用户";
+        }else if (role==3){
+            roleStr ="超级管理员";
+        }
+        return roleStr;
+    }
+
+    public void setRoleStr(String roleStr) {
+        this.roleStr = roleStr;
+    }
+
+    public String getLoginStatusStr() {
+        return loginStatusStr;
+    }
+
+    public void setLoginStatusStr(String loginStatusStr) {
+        this.loginStatusStr = loginStatusStr;
+    }
+
+    public String getTalkStatusStr() {
+        if (talkStatus==0){
+            talkStatusStr ="否";
+        }else if (talkStatus==1){
+            talkStatusStr ="是";
+        }
+        return talkStatusStr;
+    }
+
+    public void setTalkStatusStr(String talkStatusStr) {
+        this.talkStatusStr = talkStatusStr;
+    }
+
+    public String getIsupdatingStr() {
+        return isupdatingStr;
+    }
+
+    public void setIsupdatingStr(String isupdatingStr) {
+        this.isupdatingStr = isupdatingStr;
+    }
+
+    public String getUpdateStatusStr() {
+        return updateStatusStr;
+    }
+
+    public void setUpdateStatusStr(String updateStatusStr) {
+        this.updateStatusStr = updateStatusStr;
+    }
 
     public Integer getUserId() {
         return userId;
