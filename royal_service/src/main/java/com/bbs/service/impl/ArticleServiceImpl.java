@@ -20,6 +20,21 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public List<Article> findByZoneId(Integer zoneId) {
+        return articleDao.findByZoneId(zoneId);
+    }
+
+    @Override
+    public Article getArticle(Integer articleId) {
+        return articleDao.getArticle(articleId);
+    }
+
+    @Override
+    public Article getArticleDesc(Integer articleId) {
+        return articleDao.getArticleDesc(articleId);
+    }
+
+    @Override
     public void save(Article article) {
         articleDao.save(article);
     }

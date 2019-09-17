@@ -17,10 +17,19 @@ public class ArticleController {
     private ArticleService articleService;
 
     @RequestMapping("/findAll.do")
+    @ResponseBody
     public ModelAndView findAll(){
         ModelAndView mv = new ModelAndView();
         List<Article> list = articleService.findAll();
         mv.addObject("list",list);
+        mv.setViewName("index");
+        return mv;
+    }
+@RequestMapping("/findByZoneId.do")
+    public ModelAndView findByZoneId(Integer zoneId) {
+        List<Article> list = articleService.findByZoneId(zoneId);
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("articleList",list);
         mv.setViewName("index");
         return mv;
     }
@@ -35,5 +44,22 @@ public class ArticleController {
     }
 
 
+    @RequestMapping("getArticle.do")
+    public ModelAndView getArticle(Integer articleId){
+        Article article = articleService.getArticle(articleId);
+        article.setArticleId(articleId);
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("article",article);
+        mv.setViewName("getArticle");
+        return mv;
+    }
+    @RequestMapping("getArticleDesc.do")
+    public ModelAndView getArticleDesc(Integer articleId){
+        Article article = articleService.getArticleDesc(articleId);
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("article",article);
+        mv.setViewName("getArticle");
+        return mv;
+    }
 
 }

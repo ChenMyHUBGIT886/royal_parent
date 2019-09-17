@@ -10,13 +10,6 @@ import java.util.List;
 
 public interface ZoneDao {
 
-    //根据ID查询zone,并且查询article集合，作者郭付民
-    @Select("select * from bbs_zone_table where zoneId=#{zoneId}")
-    @Results({
-         @Result(id = true,property = "zoneId",column = "zoneId"),
-            @Result(property = "zoneName",column = "zoneName"),
-            @Result(property = "isDef",column = "isDef"),
-            @Result(property = "articles",javaType = List.class,column = "zoneId",many=@Many(select = "com.bbs.dao.ArticleDao.findByZoneid"))
-    })
-    Zone findById(Integer zoneId);
+    @Select("select * from bbs_zone_table")
+    List<Zone> findAll();
 }
