@@ -21,6 +21,7 @@
 <jsp:include page="common/header.jsp"/>
 
 
+
 <div class="hm-header"></div>
 <div class="hm-body hm-body-bgc">
     <div class="hm-inner">
@@ -28,17 +29,17 @@
         <!--帖子标题，点赞数，回复数，搜索-->
         <div class="hm-bbs-info">
             <div class="hm-bbs-icon l" style="width:130px;">
-                <span><img src="images/bbs-icon.png" height="80"/></span>
+                <span><img src="../images/bbs-icon.png" height="80"/></span>
             </div>
             <div class="hm-bbs-info-in l" style="margin-left:30px;">
                 <div class="t clearfix">
-                    <h2 class="l">求官方出艾琳英雄活动</h2>
+                    <h2 class="l">${article.title}</h2>
                     <div class="hm-detail-fun l">
 					     <span class="icon-like">
-					         <a href="#"><i></i>3</a>
+					         <a href="#"><i></i>${article.upvoteCount}</a>
 					     </span>
                         <span class="icon-talk">
-						     <i></i>10
+						     <i></i>${article.replyCount}
 						</span>
                     </div>
                 </div>
@@ -54,14 +55,21 @@
 
         <!--导航，回首页，帖子标题，排序-->
         <div class="detail-page-box clearfix">
-            <a href="index.do">
+            <a href="${pageContext.request.contextPath}/zone/findAll.do">
                 <i class="hm-ico-home"></i>首页
             </a>
             <span>></span>
-            <a href="#">求官方出艾琳英雄活动</a>
-            <a class="new-to-old r" href="" style="font-size:12px;float: right;">
-                <i></i>从新到旧查看
+            <a href="#">${article.title}</a>
+            <c:if test="${article.comments[0].commentTimeStr>article.comments[1].commentTimeStr}">
+            <a id="asc" class="new-to-new r"  href="${pageContext.request.contextPath}/article/getArticle.do?articleId=${article.articleId}" style="font-size:12px;float: right;">
+                <i></i>正序
             </a>
+            </c:if>
+            <c:if test="${article.comments[0].commentTimeStr<article.comments[1].commentTimeStr}">
+            <a id="desc" class="new-to-old r" href="${pageContext.request.contextPath}/article/getArticleDesc.do?articleId=${article.articleId}" style="font-size:12px;float: right;">
+                <i></i>倒序
+            </a>
+            </c:if>
         </div>
 
 
@@ -71,17 +79,17 @@
                 <!--原帖楼-->
                 <li class="floor clearfix">
                     <div class="floorer-info l">
-                        <div class="floorer-photo"><img src="images/default.png"/></div>
-                        <div class="floorer-name">晨曦初露</div>
+                        <div class="floorer-photo"><img src=${article.userInfo.picUrl}></div>
+                        <div class="floorer-name">${article.senderName}</div>
                     </div>
                     <div class="floor-con l">
                         <div class="floor-info clearfix">
-                            <div class="floor-time l">发帖时间：2017-05-24 09:10:00</div>
-                            <div class="r">100次查看</div>
+                            <div class="floor-time l">${article.sendTimeStr}</div>
+                            <div class="r">${article.browseCount}次查看</div>
                         </div>
                         <div class="floor-art-ans">
                             <div class="floor-art">
-                                <p>本人玩得迟，所以看到别人用艾琳的时候，特别羡慕，现贵族6了，很想要一个艾琳，我身边很多朋友也想要，求</p>
+                                <p>${article.content}</p>
                             </div>
                             <div class="floor-ans"></div>
                         </div>
@@ -102,32 +110,36 @@
 
 
                 <!-- 评论部分,一楼及以后 -->
+                <c:forEach items="${article.comments}" var="comment" varStatus="status">
+
+
                 <li class="floor clearfix">
                     <div class="floorer-info l">
-                        <div class="floorer-photo"><img src="images/default.png"/></div>
-                        <div class="floorer-name">不哭不闹不炫耀</div>
+                        <div class="floorer-photo"><img src=${comment.userInfo.picUrl}></div>
+                        <div class="floorer-name">${comment.userInfo.userName}</div>
                     </div>
                     <div class="floor-con l">
                         <div class="floor-info clearfix">
-                            <div class="floor-time l">回贴时间：2017-05-24 10:10:00</div>
-                            <div class="r">1楼</div>
+                            <div class="floor-time l">回贴时间：${comment.commentTimeStr}</div>
+                            <div class="r">${status.index+1}楼</div>
                         </div>
                         <div class="floor-art-ans">
                             <div class="floor-art">
-                                <p>楼主你好，请按以下建议反馈格式回复，我们会有专人进行收集。祝你游戏愉快。</p>
+                                <p>${comment.commentContent}</p>
                             </div>
                             <div class="floor-ans">
                                 <ul>
 
-                                    <!-- 回复部分,楼中楼 -->
-                                    <li class="clearfix">
-                                        <div class="floor-ans-pho l"><img src="images/default.png"/></div>
-                                        <div class="floor-ans-con l">
-                                            <span class="name">张无忌</span>：顶顶顶！
-                                            <span class="ans-time">2017-05-24 10:11:00</span>
-                                        </div>
-                                    </li>
-
+                                    <c:forEach items="${comment.replyList}" var="reply">
+                                        <!-- 回复部分,楼中楼 -->
+                                        <li class="clearfix">
+                                            <div class="floor-ans-pho l"><img src=${reply.userInfo.picUrl}></div>
+                                            <div class="floor-ans-con l">
+                                                <span class="name">${reply.replyUserName}</span>：${reply.replyContent}
+                                                <span class="ans-time">${reply.replyTimeStr}</span>
+                                            </div>
+                                        </li>
+                                    </c:forEach>
 
                                 </ul>
                             </div>
@@ -137,80 +149,7 @@
                         </div>
                     </div>
                 </li>
-
-                <!--二楼-->
-                <li class="floor clearfix">
-                    <div class="floorer-info l">
-                        <div class="floorer-photo"><img src="images/default.png"/></div>
-                        <div class="floorer-name">不哭不闹不炫耀</div>
-                    </div>
-                    <div class="floor-con l">
-                        <div class="floor-info clearfix">
-                            <div class="floor-time l">回贴时间：2017-05-24 10:10:00</div>
-                            <div class="r">2楼</div>
-                        </div>
-                        <div class="floor-art-ans">
-                            <div class="floor-art">
-                                <p>楼主你好，请按以下建议反馈格式回复，我们会有专人进行收集。祝你游戏愉快。</p>
-                            </div>
-                            <div class="floor-ans">
-                                <ul>
-
-                                    <!-- 回复部分 -->
-                                    <li class="clearfix">
-                                        <div class="floor-ans-pho l"><img src="images/default.png"/></div>
-                                        <div class="floor-ans-con l">
-                                            <span class="name">张无忌</span>：顶顶顶！
-                                            <span class="ans-time">2017-05-24 10:11:00</span>
-                                        </div>
-                                    </li>
-
-                                </ul>
-                            </div>
-                            <span class="icon-feedback">
-                                <a href="javascript:;" onclick="showDialog(2)"> <i></i> 回复</a>
-                            </span>
-                        </div>
-                    </div>
-                </li>
-
-
-                <!--三楼-->
-                <li class="floor clearfix">
-                    <div class="floorer-info l">
-                        <div class="floorer-photo"><img src="images/default.png"/></div>
-                        <div class="floorer-name">不哭不闹不炫耀</div>
-                    </div>
-                    <div class="floor-con l">
-                        <div class="floor-info clearfix">
-                            <div class="floor-time l">回贴时间：2017-05-24 10:10:00</div>
-                            <div class="r">3楼</div>
-                        </div>
-                        <div class="floor-art-ans">
-                            <div class="floor-art">
-                                <p>楼主你好，请按以下建议反馈格式回复，我们会有专人进行收集。祝你游戏愉快。</p>
-                            </div>
-                            <div class="floor-ans">
-                                <ul>
-
-                                    <!-- 回复部分 -->
-                                    <li class="clearfix">
-                                        <div class="floor-ans-pho l"><img src="images/default.png"/></div>
-                                        <div class="floor-ans-con l">
-                                            <span class="name">张无忌</span>：顶顶顶！
-                                            <span class="ans-time">2017-05-24 10:11:00</span>
-                                        </div>
-                                    </li>
-
-                                </ul>
-                            </div>
-                            <span class="icon-feedback">
-                                <a href="javascript:;" onclick="showDialog(3)"> <i></i> 回复</a>
-                            </span>
-                        </div>
-                    </div>
-                </li>
-
+                </c:forEach>
 
             </ul>
         </div>
@@ -237,8 +176,10 @@
 </div>
 
 
+
 <!-- 底部 -->
 <jsp:include page="common/footer.jsp"/>
+
 
 
 <!-- 回复弹出框 -->
@@ -271,22 +212,22 @@
     <a href="#" class="goTop"><i></i><span>返回<br/>顶部</span></a>
 </div>
 
-<a href="${pageContext.request.contextPath}/Test/test.do">赋值</a>
 
 </body>
 
 <script type="text/javascript">
-    //弹出回复框
-    function showDialog(num, commentId) {
-        var loginUser = "${loginUser}";
-        if (!loginUser) {
-            alert("请登录");
-            return;
-        }
-        $("#commentId").val(commentId);
-        $('.pop-box').css('display', 'block');
-        $("#floorSpan").html(num);
-    }
+//弹出回复框
+function showDialog(num, commentId) {
+	var loginUser = "${loginUser}";
+	if(!loginUser){
+		alert("请登录");
+		return;
+	}
+	$("#commentId").val(commentId);
+    $('.pop-box').css('display', 'block');
+    $("#floorSpan").html(num);
+}
+
 </script>
 
 <script>
@@ -294,7 +235,7 @@
     //1：判断是否有用户登录
     $(function () {
         //  a.没有用户登录的时候，点击爱心按钮就提示先登录
-        if (${empty sessionScope.userbaojia}) {
+        if (${empty sessionScope.user}) {
             $("#myUpVote").click(function () {
                 alert("请先登录~")
             })
@@ -310,7 +251,7 @@
                     $.ajax({
                         url: "${pageContext.request.contextPath}/upVote/saveByBean.do",
                         contentType:"application/json;charset=UTF-8",
-                        data: '{"upvoteUserName": "${userbaojia.userName}", "upvoteArticleId": ${comment.articleId}, "isUpvote": 1}',
+                        data: '{"upvoteUserName": "${user.userName}", "upvoteArticleId": ${comment.articleId}, "isUpvote": 1}',
                         dataType: "json",
                         type: "post",
                         success: function (d) {

@@ -183,6 +183,6 @@
 </div><!-- /.hrms_dept_container -->
 
 <%--<%@ include file="ArticleAdd.jsp"%>--%>
-<%@ include file="../WEB-INF/jsp/ArticleUpdate.jsp"%>
+<%@ include file="ArticleUpdate.jsp"%>
 </body>
 </html>
