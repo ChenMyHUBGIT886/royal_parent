@@ -45,9 +45,10 @@
                 </div>
             </div>
             <div class="search-box l">
-                <form action="javascript:;">
-                    <input type="text" class="txt l" placeholder="请输入关键字">
-                    <input type="button" value="搜索" class="btn l"/>
+                <form action="${pageContext.request.contextPath}/article/findLikeComment.do">
+                    <input type="text" class="txt l" name="comment" placeholder="请输入关键字">
+                    <input type="hidden" name="articleId" value="${article.articleId}">
+                    <input type="submit" value="搜索" class="btn l"/>
                 </form>
             </div>
         </div>
@@ -93,18 +94,9 @@
                             </div>
                             <div class="floor-ans"></div>
                         </div>
-
-
                         <%--<img src="../images/qw.png" id="myUpVote">--%>
-                        <span class="hm-detail-fun l">
-                            <span class="icon-like" id="myUpVote"><a href="#"><i></i>点赞</a></span>
-                        </span>
-
-                        <span>
-
+                            <span class="icon-liked i" id="myUpVote"><a href="#"> <i></i>点赞</a></span>
                             <span class="icon-comment"><a href="#comment"> <i></i> 评论</a></span>
-                        </span>
-
                     </div>
                 </li>
 
@@ -144,7 +136,7 @@
                                 </ul>
                             </div>
                             <span class="icon-feedback">
-                                <a href="javascript:;" onclick="showDialog(1)"> <i></i> 回复</a>
+                                <a href="javascript:;" onclick="showDialog(${status.index+1},${comment.commentId})"> <i></i> 回复</a>
                             </span>
                         </div>
                     </div>
@@ -156,21 +148,27 @@
 
         <!--发表评论-->
         <div class="detail-to-comment">
-            <div class="tit"><a name="comment">发表评论</a></div>
+            <c:if test="${empty user}">
+                <div class="con"><a href="javascript:;" onclick="showLogin()"><h5>您没有登录论坛，请登录后再进行回复</h5></a></div>
             <!-- 未登录时候显示 <div class="con">您没有登录论坛，请登录后再进行回复</div>-->
-
+            </c:if>
+            <div class="tit"><a name="comment">发表评论</a></div>
+            <c:if test="${not empty user}">
             <!-- 登录后显示评论输入框-->
-            <form action="#" method="post">
+            <form id="formAdd" action="#" method="post">
+                <input type="hidden" name="commentUserName" value="${user.userName}">
+                <input type="hidden" name="articleId" value="${article.articleId}">
                 <div class="con con-loged">
                     <div class="con-t">
                         <textarea id="content" name="commentContent" placeholder="请在此输入您要回复的信息"></textarea>
                     </div>
                     <div class="con-b">
-                        <input type="submit" class="btn"/>
+                        <input id="btnAdd" type="button" class="btn" value="发表评论"/>
                         <span class="num">不能超过5000字</span>
                     </div>
                 </div>
             </form>
+            </c:if>
         </div>
     </div>
 </div>
@@ -183,7 +181,7 @@
 
 
 <!-- 回复弹出框 -->
-<form action="" method="post">
+<form id="formReply" action="" method="post">
     <div class="pop-box ft-box">
         <div class="mask"></div>
         <div class="win">
@@ -198,15 +196,16 @@
             </div>
             <div class="win_ft">
                 <div class="win_ft_in">
-                    <input type="submit" class="btn" value="回复"/>
+                    <input id="btnReply" type="button" class="btn" value="回复"/>
                     <input type="hidden" id="commentId" name="commentId"/>
+                    <input type="hidden" value="${user.userName}" name="replyUserName"/>
                 </div>
             </div>
         </div>
     </div>
 </form>
 
-
+<%--右侧--%>
 <div class="fixedBar" id="j_fixedBar">
     <a href="#comment" class="newTopic"><span></span>回复</a>
     <a href="#" class="goTop"><i></i><span>返回<br/>顶部</span></a>
@@ -218,16 +217,33 @@
 <script type="text/javascript">
 //弹出回复框
 function showDialog(num, commentId) {
-	var loginUser = "${loginUser}";
+	var loginUser = "${user}";
 	if(!loginUser){
 		alert("请登录");
-		return;
+        var className = $(this).attr('class');
+        $('#dialogBg').fadeIn(300);
+        $('#dialog').removeAttr('class').addClass('animated ' + className + '').fadeIn();
+        $('#userName').focus();
+        $("#j_fixedBar").hide();
+        return;
 	}
 	$("#commentId").val(commentId);
     $('.pop-box').css('display', 'block');
     $("#floorSpan").html(num);
 }
 
+
+function showLogin() {
+    var loginUser = "${user}";
+    if(!loginUser){
+        var className = $(this).attr('class');
+        $('#dialogBg').fadeIn(300);
+        $('#dialog').removeAttr('class').addClass('animated ' + className + '').fadeIn();
+        $('#userName').focus();
+        $("#j_fixedBar").hide();
+        return;
+    }
+}
 </script>
 
 <script>
@@ -312,5 +328,40 @@ function showDialog(num, commentId) {
             }
         }
     })
+
+    $("#btnAdd").click(function () {
+        $.ajax({
+            type: "POST",
+            url:"${pageContext.request.contextPath}/comment/addComment.do",
+            data:$("#formAdd").serialize(),
+            // contentType:"application/html;charset=utf-8",
+            dataType:"json",
+            success:function (data) {
+                if (data.msg == 1){
+                    alert("发表成功经验+3 告辞 ✌")
+                    location.reload();
+                }
+            }
+
+        })
+    })
+
+    $("#btnReply").click(function () {
+        $.ajax({
+            type: "POST",
+            url:"${pageContext.request.contextPath}/reply/addReply.do",
+            data:$("#formReply").serialize(),
+            // contentType:"application/html;charset=utf-8",
+            dataType:"json",
+            success:function (data) {
+                if (data.msg == 1){
+                    alert("回复成功经验+3 告辞 ✌")
+                    location.reload();
+                }
+            }
+
+        })
+    })
+
 </script>
 </html>

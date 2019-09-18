@@ -26,6 +26,7 @@ public class UserController {
             UserInfo resultUser = userService.login(userInfo);
             if (resultUser != null){
                 if (userName.equals(resultUser.getUserName()) && userPass.equals(resultUser.getUserPass())) {
+                    userService.loginStatus();
                     request.getSession().setAttribute("user",resultUser);
                     return "{\"msg\":\"0\"}";
                 } else {
@@ -40,6 +41,7 @@ public class UserController {
     @RequestMapping("/logout")
     public String logout(HttpServletRequest request){
         request.getSession().removeAttribute("user");
+        userService.logoutStatus();
         return "redirect:/zone/findAll.do";
     }
 }
