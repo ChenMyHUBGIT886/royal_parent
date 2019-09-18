@@ -16,4 +16,10 @@ public interface UserService {
     void changeTalkStatus(Integer id, Integer talkStatus) throws Exception;
 
     UserInfo login(UserInfo userInfo);
+
+    void loginStatus();
+
+    void logoutStatus();
+
+    List<UserInfo> findAllLoginStatus();
 }

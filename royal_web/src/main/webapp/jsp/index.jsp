@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <html>
 <head>
     <meta charset="UTF-8"/>
@@ -28,7 +29,7 @@
         <!--头部，帖子统计，搜索-->
         <div class="hm-bbs-info">
             <div class="hm-bbs-icon l" style="width:130px;">
-                <span><img src="images/bbs-icon.png" height="80"/></span>
+                <span><img src="../images/bbs-icon.png" height="80"/></span>
             </div>
             <div class="hm-bbs-info-in l" style="margin-left:30px;">
                 <div class="t clearfix"><h2 class="l">王者荣耀</h2></div>
@@ -38,9 +39,9 @@
                 </p>
             </div>
             <div class="search-box l">
-                <form action="javascript:;">
-                    <input type="text" class="txt l" placeholder="请输入关键字">
-                    <input type="button" value="搜索" class="btn l"/>
+                <form action="${pageContext.request.contextPath}/zone/findLikeTitle.do">
+                    <input type="text" name="title" class="txt l" placeholder="请输入关键字">
+                    <input type="submit" value="搜索" class="btn l"/>
                 </form>
             </div>
         </div>
@@ -48,7 +49,7 @@
 
         <!-- 导航 -->
         <ul class="hm-bbs-nav border-lrb clearfix">
-            <c:forEach items="${zoneList}" var="zone">
+            <c:forEach items="${zoneList}" var="zone" varStatus="status">
 
                 <c:if test="${zone.zoneId==articleList[0].zoneId}">
                     <li class="current">
@@ -92,7 +93,7 @@
                         <c:if test="${article.isTop!=1}">
                             <li>
                                 <div class="hm-index-title">
-                                    <a href="getArticle.do">${article.title}</a>
+                                    <a href="${pageContext.request.contextPath}/article/getArticle.do?articleId=${article.articleId}">${article.title}</a>
                                 </div>
                                 <div class="hm-index-con">${article.content}</div>
                                 <div class="hm-index-info l">
@@ -115,17 +116,15 @@
             <div class="aside l">
                 <div class="aside-box">
                     <h3 class="t">
-                        <a href="javascript:;">在线用户(2)</a>
+                        <a href="javascript:;">在线用户 *${userStatusList.size()}*</a>
                     </h3>
                     <ul class="b clearfix">
+                        <c:forEach items="${userStatusList}" var="userStatus">
                         <li>
-                            <div><img src="../images/default.png" height="55"/></div>
-                            <p>Mr.King</p>
+                            <div><img src="${userStatus.picUrl}" height="55"/></div>
+                            <p>${userStatus.userName}</p>
                         </li>
-                        <li>
-                            <div><img src="../images/default.png" height="55"/></div>
-                            <p>疯子</p>
-                        </li>
+                        </c:forEach>
                     </ul>
                 </div>
             </div>
@@ -177,14 +176,14 @@
 
 
 <script>
-    $(function () {
+   /* $(function () {
         $("#btn").click(function () {
-            if(${empty userInfo }){
+            <%--if(${empty userInfo }){--%>
                 alert("请先登录")
                 location.href="${pageContext.request.contextPath}/register.jsp"
             }
         })
-    })
+    })*/
 </script>
 
 

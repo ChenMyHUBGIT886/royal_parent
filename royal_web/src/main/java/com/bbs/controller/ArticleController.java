@@ -1,7 +1,10 @@
 package com.bbs.controller;
 
 import com.bbs.domain.Article;
+import com.bbs.domain.UserInfo;
 import com.bbs.service.ArticleService;
+import com.bbs.service.CommentService;
+import com.bbs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +18,10 @@ import java.util.List;
 public class ArticleController {
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private CommentService commentService;
 
     @RequestMapping("/findAll.do")
     @ResponseBody
@@ -29,6 +36,8 @@ public class ArticleController {
     public ModelAndView findByZoneId(Integer zoneId) {
         List<Article> list = articleService.findByZoneId(zoneId);
         ModelAndView mv = new ModelAndView();
+    List<UserInfo> userList = userService.findAllLoginStatus();
+    mv.addObject("userStatusList",userList);
         mv.addObject("articleList",list);
         mv.setViewName("index");
         return mv;
@@ -57,6 +66,15 @@ public class ArticleController {
     public ModelAndView getArticleDesc(Integer articleId){
         Article article = articleService.getArticleDesc(articleId);
         ModelAndView mv = new ModelAndView();
+        mv.addObject("article",article);
+        mv.setViewName("getArticle");
+        return mv;
+    }
+
+    @RequestMapping("/findLikeComment.do")
+    public ModelAndView findLikeTitle(Integer articleId,String comment){
+        ModelAndView mv = new ModelAndView();
+        Article article= articleService.findLikeComment(articleId,comment);
         mv.addObject("article",article);
         mv.setViewName("getArticle");
         return mv;

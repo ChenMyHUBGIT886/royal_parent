@@ -49,4 +49,19 @@ public class UserServiceImpl implements UserService {
     public UserInfo login(UserInfo userInfo) {
         return userDao.login(userInfo);
     }
+
+    @Override
+    public void loginStatus() {
+        userDao.loginStatus();
+    }
+
+    @Override
+    public void logoutStatus() {
+        userDao.logoutStatus();
+    }
+
+    @Override
+    public List<UserInfo> findAllLoginStatus() {
+        return userDao.findAllLoginStatus();
+    }
 }
