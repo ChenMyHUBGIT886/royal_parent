@@ -177,14 +177,7 @@
 
 
 <script>
-    $(function () {
-        $("#btn").click(function () {
-            if(${empty userInfo }){
-                alert("请先登录")
-                location.href="${pageContext.request.contextPath}/register.jsp"
-            }
-        })
-    })
+
 </script>
 
 
