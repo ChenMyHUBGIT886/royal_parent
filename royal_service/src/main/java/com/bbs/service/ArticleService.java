@@ -16,4 +16,12 @@ public interface ArticleService {
     void save(Article article);
 
     Article findById(Integer articleId);
+
+    List<Article> findByPage(int pageNum, int pageSize);
+
+    void changeStatus(Integer articleId, Integer isTop);
+
+    void deleteArticle(Integer articleId);
+
+    Article findByIdManager(Integer articleId);
 }

@@ -49,4 +49,20 @@ public interface ArticleDao {
 
     @Select("select * from bbs_article_table where articleId=#{articleId}")
     Article findById(Integer articleId);
+
+    //查询所有帖子（后台）
+    @Select("select * from bbs_article_table order by isTop desc")
+    List<Article> findAllManager();
+
+    //后台帖子置顶
+    @Update("update bbs_article_table set isTop = #{isTop} where articleId = #{articleId}")
+    void changeStatus(@Param("articleId") Integer articleId, @Param("isTop") Integer isTop);
+
+    //后台根据Id删除帖子
+    @Delete("delete from bbs_article_table where articleId = #{articleId}")
+    void deleteArticle(Integer articleId);
+
+    //后台根据Id查询帖子
+    @Select("select * from bbs_article_table where articleId = #{articleId}")
+    Article findByIdManager(Integer articleId);
 }
