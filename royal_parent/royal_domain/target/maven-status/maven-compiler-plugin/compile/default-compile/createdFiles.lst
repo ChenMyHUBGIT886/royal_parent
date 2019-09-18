@@ -1,0 +1,9 @@
+com\bbs\domain\UpVote.class
+com\bbs\domain\Report.class
+com\bbs\domain\Reply.class
+com\bbs\domain\Zone.class
+com\bbs\domain\Comment.class
+com\bbs\domain\Word.class
+com\bbs\domain\ZoneApply.class
+com\bbs\domain\UserInfo.class
+com\bbs\domain\Article.class

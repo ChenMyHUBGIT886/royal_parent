@@ -1,0 +1,12 @@
+com\bbs\service\impl\ZoneServiceImpl.class
+com\bbs\service\ZoneService.class
+com\bbs\service\UserService.class
+com\bbs\service\impl\RegisterServiceImpl.class
+com\bbs\service\RegisterService.class
+com\bbs\service\impl\WordServiceImpl.class
+com\bbs\service\WordService.class
+com\bbs\service\impl\ArticleServiceImpl.class
+com\bbs\service\impl\ReportServiceImpl.class
+com\bbs\service\ArticleService.class
+com\bbs\service\impl\UserServiceImpl.class
+com\bbs\service\ReportService.class

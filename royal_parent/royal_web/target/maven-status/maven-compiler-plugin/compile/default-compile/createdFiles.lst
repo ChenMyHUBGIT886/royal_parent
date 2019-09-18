@@ -1,0 +1,3 @@
+com\bbs\controller\RegisterController.class
+com\bbs\controller\ArticleController.class
+com\bbs\controller\ZoneController.class
