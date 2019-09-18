@@ -37,4 +37,17 @@ public class WordController {
         mv.setViewName("WordPage");
         return mv;
     }
+
+    /**
+     * 添加敏感词
+     *
+     * @param word
+     */
+    @RequestMapping("/addWord.do")
+    public ModelAndView addWord(@RequestParam(name = "word", required = true) String word) {
+        ModelAndView mv = new ModelAndView();
+        wordService.addWord(word);
+        mv.setViewName("WordPage");
+        return mv;
+    }
 }

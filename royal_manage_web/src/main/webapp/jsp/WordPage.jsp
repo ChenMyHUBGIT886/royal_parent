@@ -46,7 +46,7 @@
                 </div>
                 <div style="clear:both"></div>
 
-                <a href="/word/deleteArticle.do?id=${article.articleid}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-primary">新增加敏感词</a>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">新增加敏感词</button>
 
                 <table class="table table-bordered table-hover">
                     <thead>
@@ -123,6 +123,33 @@
                     </nav>
                 </div>
             </div>
+
+            <!-- 模态框（Modal） -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                新增加敏感词
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <textarea class="form-control" rows="1" name="title" id="detail_title" ></textarea>
+                            <span id="span1"></span>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                            </button>
+                            <button id="wordBtn" type="button" class="btn btn-primary">
+                                保存
+                            </button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
         </div><!-- /.dept_info -->
         <!-- 尾部-->
         <%@ include file="commom/foot.jsp"%>
@@ -136,6 +163,22 @@
     function searchArticle(data) {
         location.href="${pageContext.request.contextPath}/word/findByPage.do?pageNum="+data+"&pageSize=5";
     }
+
+    $("#wordBtn").click(function () {
+        $.ajax({
+            url:"${pageContext.request.contextPath}/word/addWord.do",
+            type:"POST",
+            data:{"word":$("#detail_title").val()},
+            contentType:"application/json;charset=UTF-8",
+            success:function (d) {
+                if ($("#detail_title").val()=="") {
+                    $("#span1").css("color","red").html("请输入敏感词");
+                }else {
+                    location.reload();
+                }
+            }
+        })
+    })
 </script>
 </body>
 </html>

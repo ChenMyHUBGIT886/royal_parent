@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface WordService {
     List<Word> findByPage(int pageNum, int pageSize);
+
+    void addWord(String word);
 }

@@ -18,7 +18,14 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
-    //查询所有审批举报
+    /**
+     * 查询所有审批举报
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/findByPage.do")
     public ModelAndView findByPage(
             @RequestParam(name = "pageNum", required = true, defaultValue = "1") int pageNum,
@@ -29,5 +36,28 @@ public class ReportController {
         mv.addObject("pageInfo", pageInfo);
         mv.setViewName("ReportPage");
         return mv;
+    }
+
+    /**
+     * 屏蔽举报帖子
+     *
+     * @param articleId
+     * @return
+     */
+    @RequestMapping("/changeIsReport.do")
+    public String changeIsReport(int articleId) {
+        reportService.changeIsReport(articleId);
+        return "redirect:findByPage.do";
+    }
+
+    /**
+     * 驳回举报帖子
+     *
+     * @param reportId
+     */
+    @RequestMapping("/changeStatus.do")
+    public String changeStatus(int reportId) {
+        reportService.changeStatus(reportId);
+        return "redirect:findByPage.do";
     }
 }

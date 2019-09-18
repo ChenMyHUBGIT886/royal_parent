@@ -64,9 +64,14 @@
                                 <td width="10%" class="line-limit-length">${reports.reportUserName}</td>
                                 <td width="20%" class="line-limit-length">${reports.reportTime}</td>
                                 <td width="20%">
-                                    <a href="${pageContext.request.contextPath}/article/findByIdManager.do?articleId=${reports.articleId}"><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">相关帖子</button></a>
-                                    <a href="/article/changeStatus.do?id=${article.articleid}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-danger" >屏蔽</a>
-                                    <a href="/article/changeStatus.do?id=${article.articleid}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-info" >驳回</a>
+                                    <a id="articleDet2ail" onclick="articleDetail(${reports.articleId})" class="btn btn-primary" data-toggle="modal" data-target="#myModal">相关帖子</a>
+                                    <c:if test="${reports.reportStatus==0}">
+                                        <a href="${pageContext.request.contextPath}/report/changeIsReport.do?articleId=${article.articleId}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-danger" >屏蔽</a>
+                                        <a href="${pageContext.request.contextPath}/report/changeStatus.do?reportId=${reports.reportId}" role="button" class="btn btn-info" >驳回</a>
+                                    </c:if>
+                                    <c:if test="${reports.reportStatus==1}">
+                                        <a href="${pageContext.request.contextPath}/article/changeStatus.do?id=${article.articleId}&isTop=0" role="button" class="btn btn-info" >取消</a>
+                                    </c:if>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -166,6 +171,19 @@
         location.href="${pageContext.request.contextPath}/report/findByPage.do?pageNum="+data+"&pageSize=5";
     }
 
+    function articleDetail(articleId) {
+        $.ajax({
+            url:"${pageContext.request.contextPath}/article/findByIdManager.do",
+            type:"GET",
+            data:{"articleId":articleId},
+            contentType:"application/json;charset=UTF-8",
+            success:function (d) {
+                alert(125)
+                /*$("#detail_title").html(d.title);
+                $("#detail_content").html(d.content);*/
+            }
+        })
+    }
 </script>
 </body>
 </html>

@@ -27,4 +27,16 @@ public class WordServiceImpl implements WordService {
         PageHelper.startPage(pageNum, pageSize);
         return wordDao.findAll();
     }
+
+    /**
+     * 添加敏感词
+     *
+     * @param word
+     */
+    @Override
+    public void addWord(String word) {
+        if (word != "") {
+            wordDao.addWord(word);
+        }
+    }
 }

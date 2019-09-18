@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -32,8 +34,8 @@ public class ArticleController {
      */
     @RequestMapping("/findByPage.do")
     public ModelAndView findByPage(
-            @RequestParam(name = "pageNum", required = true, defaultValue = "1") int pageNum,
-            @RequestParam(name = "pageSize", required = true, defaultValue = "5") int pageSize) throws Exception {
+            @RequestParam(name = "pageNum", defaultValue = "1") int pageNum,
+            @RequestParam(name = "pageSize", defaultValue = "5") int pageSize) throws Exception {
         ModelAndView mv = new ModelAndView();
         List<Article> articleList = articleService.findByPage(pageNum, pageSize);
         PageInfo pageInfo = new PageInfo(articleList);
@@ -75,11 +77,10 @@ public class ArticleController {
      * @return
      */
     @RequestMapping("/findByIdManager.do")
-    public ModelAndView findByIdManager(Integer articleId) throws Exception {
-        ModelAndView mv = new ModelAndView();
+    public void findByIdManager(Integer articleId, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Article article = articleService.findByIdManager(articleId);
-        mv.addObject("article", article);
-        mv.setViewName("ReportPage");
-        return mv;
+        request.getSession().setAttribute("article", article);
+        System.out.println(article);
+
     }
 }
