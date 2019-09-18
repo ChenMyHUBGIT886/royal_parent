@@ -78,7 +78,7 @@
                     <ul class="bd">
                         <li class="clearfix">
                             <div class="info-l"><i class="red">*</i>用户名：</div>
-                            <div class="info-r"><input type="text" class="txt" value="${user.userName}" readonly="readonly"/></div>
+                            <div class="info-r"><input type="text" name="userName" class="txt" value="${user.userName}" readonly="readonly"/></div>
                         </li>
                         <li class="clearfix">
                             <div class="info-l">邮箱地址：</div>
@@ -86,7 +86,7 @@
                         </li>
                         <li class="clearfix">
                             <div class="info-l">上传头像：</div>
-                            <div class="info-r"><input type="file" name="picUrl" class="file-btn"/></div>
+                            <div class="info-r"><input type="file" name="file" class="file-btn"/></div>
                         </li>
                         <li class="clearfix">
                             <div class="info-l"></div>

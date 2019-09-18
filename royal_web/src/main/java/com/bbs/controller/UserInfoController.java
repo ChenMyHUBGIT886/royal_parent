@@ -6,6 +6,7 @@ import com.bbs.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +22,7 @@ public class UserInfoController {
     //文件上传
 
     @RequestMapping("/update.do")
-    public String update(UserInfo userInfo,HttpServletRequest request, MultipartFile picUrl) throws Exception {
+    public String update( @RequestParam(name="file" ) MultipartFile picUrl ,UserInfo userInfo,HttpServletRequest request) throws Exception {
         // 使用fileupload组件完成文件上传
         // 上传的位置
         String path = request.getSession().getServletContext().getRealPath("/upload/images");
@@ -40,10 +41,9 @@ public class UserInfoController {
         // 完成文件上传
         picUrl.transferTo(new File(path,filename));
         //图片地址
-        userInfo.setPicUrl(path+filename);
+        userInfo.setPicUrl(""+"/upload/images"+filename);
         //更新用户
         userInfoService.update(userInfo);
         return "userInfo";
-
     }
 }
