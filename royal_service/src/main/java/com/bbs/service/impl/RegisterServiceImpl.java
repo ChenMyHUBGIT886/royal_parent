@@ -13,8 +13,10 @@ public class RegisterServiceImpl implements RegisterService {
     private RegisterDao registerDao;
 
     @Override
-    public void save(UserInfo userInfo) {
+    public UserInfo save(UserInfo userInfo) {
         registerDao.save(userInfo);
+        UserInfo userInfo1 = registerDao.findByName(userInfo.getUserName());
+        return userInfo1;
     }
 
     @Override

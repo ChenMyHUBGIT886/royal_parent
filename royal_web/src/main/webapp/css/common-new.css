@@ -490,12 +490,13 @@ a:visited {
 .floor-con .icon-comment i{
   background-position: -128px -32px;
 }
-.floor-con .icon-comment,.floor-con .icon-feedback {
+.floor-con .icon-comment,.floor-con .icon-feedback{
   display: inline-block;
   position: absolute;
   right: 10px;
   bottom: 10px;
 }
+
 /*回复*/
 .floor-con .icon-feedback i{
   background-position: -16px 0;

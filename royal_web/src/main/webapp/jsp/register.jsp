@@ -11,6 +11,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/register.css"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.7.2.min.js"></script>
 </head>
+<style>
+    .tips{
+        color:red;
+    }
+</style>
 <body>
 
 
@@ -44,36 +49,36 @@
         <div class="reg-box">
             <h2>用户注册<span>（红色型号代表必填）</span></h2>
             <div class="reg-info">
-                <form action="${pageContext.request.contentType}/register/register.do" method="post" id="registerFrom">
+                <form method="post" id="registerFrom">
                     <ul>
                         <li>
                             <div class="reg-l">
                                 <span class="red">*</span> 用户名：
                             </div>
                             <div class="reg-c">
-                                <input type="text" id="username" name="username" class="txt" />
+                                <input  type="text" id="userBaojia" name="userName" class="txt"/>
                             </div>
-                            <span class="tips">用户名必须是由英文、数字、下划线组成</span>
+                            <span id="spanUser" class="tips">用户名必须是由英文、数字、下划线组成</span>
                         </li>
                         <li>
                             <div class="reg-l">
                                 <span class="red">*</span> 密&nbsp;&nbsp;&nbsp;码：
                             </div>
                             <div class="reg-c">
-                                <input type="password" id="userpass" name="userpass" class="txt" />
+                                <input type="password" id="uPass" name="userPass" class="txt"/>
                             </div>
-                            <span class="tips">密码长度必须6~10位的英文或数字</span>
+                            <span id="spanPass" class="tips">密码长度必须6~10位的英文或数字</span>
                         </li>
                         <li class="no-tips">
                             <div class="reg-l">&nbsp;&nbsp;邮&nbsp;&nbsp;&nbsp;箱：</div>
                             <div class="reg-c">
-                                <input type="text" id="email" name="email" class="txt" />
+                                <input type="text" id="email" name="email" class="txt"/>
                             </div>
                         </li>
                         <li>
                             <div class="reg-l"></div>
                             <div class="reg-c">
-                                <input type="submit" class="submit-btn" value="注册"/><br/>
+                                <input id="butRe" type="button" class="submit-btn" value="注册"/><br/>
                             </div>
                         </li>
                     </ul>
@@ -91,65 +96,89 @@
 <%--表单校验--%>
 <script>
     <%--//检验用户名--%>
-
-    function checkUserName() {
-        var username = $("#username").val();
-        var reg_username = /^\w{3,20}$/;
-        // alert(username);
+    $("#userBaojia").change(function () {
+        var username = $("#userBaojia").val();
+        var reg_username =/^\w{3,20}$/;
         var flag = reg_username.test(username);
         if (flag) {
-            if (username) {
-                $.ajax({
-                    type: "post",
-                    url: "${pageContext.request.contentType}/register/query.do",
-                    // contentType: "application/json;charset=utf-8",
-                    data: $("#registerFrom").serialize(),
-                    dataType: "json",
-                    success: function (data) {
-                        if (data!=null){
-                            alert("用户名已经被注册")
-                        }
-
+            $.ajax({
+                type: "POST",
+                url: "${pageContext.request.contentType}/register/query.do",
+                data:$("#userBaojia").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.msg == 0) {
+                        $("#spanUser").text("用户已经存在")
+                    } else if (data.msg == 1) {
+                        $("#spanUser").text("用户名可用")
                     }
-                })
-            }
-        } else {
-            alert("请输入用户名");
-            return flag;
+                }
+
+            })
         }
-
-    }
-    function checkUserPass() {
-        var userpass = $("#userpass").val();
-        var reg_userpass = /^\w{3,20}$/;
-        var flag1 = reg_userpass.test(userpass);
-        if (flag1) {
-            if (userpass) {
-            }
-        } else {
-            alert("请输入密码");
-            return flag1;
-        }
-
-    }
-
-    $(function () {
-        $("#registerFrom").submit(function () {
-            return checkUserName() ;
-        });
-        $("#registerFrom").submit(function () {
-            return checkUserPass()  ;
-        });
-
-        // $("#username").blur(function () {
-        //   return checkUserName();
-        // })
-        $("#username").blur(checkUserName);
-        $("#userpass").blur(checkUserName);
-        // $("#userpass").blur(function () {
-        //   return checkUserPass();
-        // })
     })
+
+    //校验密码
+
+    $("#uPass").change(function () {
+        var pass = $("#uPass").val();
+        var reg_pass =/^\w{3,20}$/;
+        var flag = reg_pass.test(pass);
+        if (!flag) {
+            $("#spanPass").text("密码格式不正确")
+        }else {
+            $("#spanPass").text("")
+        }
+
+    })
+
+
+    //校验提交
+    $("#butRe").click(function () {
+        var flag1;
+        var flag2;
+
+            var pass = $("#uPass").val();
+            var reg_pass =/^\w{3,20}$/;
+            var flag2 = reg_pass.test(pass);
+
+
+
+            var username = $("#userBaojia").val();
+            var reg_username =/^\w{3,20}$/;
+            var flag1 = reg_username.test(username);
+
+
+        if (flag1 && flag2) {
+            $.ajax({
+                type:"post",
+                url:"${pageContext.request.contentType}/register/register.do",
+                data:$("#registerFrom").serialize(),
+                dataType:"json",
+                success: function (data) {
+                    if (data.msg == 0) {
+                        alert("注册成功")
+                        location.href = "${pageContext.request.contentType}/zone/findAll.do"
+                    } else if (data.msg == 1) {
+                        alert("注册失败请重试")
+                    }
+                }
+            })
+        }else {
+
+            alert("请输入正确的用户名或密码")
+        }
+
+
+
+
+
+    })
+
+
+
+
+
 
 
 </script>

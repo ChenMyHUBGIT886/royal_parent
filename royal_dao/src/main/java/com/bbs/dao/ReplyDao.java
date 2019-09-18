@@ -1,10 +1,7 @@
 package com.bbs.dao;
 
 import com.bbs.domain.Reply;
-import org.apache.ibatis.annotations.One;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -16,4 +13,8 @@ public interface ReplyDao {
             ))
     })
     List<Reply> findByCommentId(Integer commentId);
+
+//    Reply{replyId=null, replyContent='asd', replyTime=null, replyUserName='admin', commentId=28}
+    @Insert("insert into bbs_reply_table values(null,#{replyContent},null,#{replyUserName},#{commentId})")
+    void addReply(Reply reply);
 }

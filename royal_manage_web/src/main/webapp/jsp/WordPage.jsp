@@ -41,75 +41,34 @@
                 <div >
                     <ol class="breadcrumb">
                         <li><a href="#">用户帖管理</a></li>
-                        <li class="active">帖子信息</li>
+                        <li class="active">敏感词汇管理</li>
                     </ol>
                 </div>
-                <hr>
-                <!-- Table -->
-                <div>
-                    <div style="float: left">
-                        <form method="get" id="articleSearchForm">
-                            <table>
-                                <tr>
-                                    <th>
-                                        <label for="title" class="control-label">标题:</label>
-                                    </th>
-                                    <th>
-                                        <input type="text" id="title" class="form-control"
-                                               name="title" value="">
-                                        <input type="hidden" id="pageNum" name="pn" value="">
-                                    </th>
-                                    <th>
-                                        <label for="article_sendername" class="control-label">创帖人:</label>
-                                    </th>
-                                    <th>
-                                        <input type="text" id="article_sendername" class="form-control"
-                                               name="sendername" value="">
-                                    </th>
-                                    <th colspan="2">
-                                        <input type="button" value="查询" class="form-control btn-primary">
-                                    </th>
-                                </tr>
-                            </table>
-
-                        </form>
-                    </div>
-                </div>
                 <div style="clear:both"></div>
-                <hr>
+
+                <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">新增加敏感词</button>
+
                 <table class="table table-bordered table-hover">
                     <thead>
                     <tr>
-                        <th>标题</th>
-                        <th>内容</th>
-                        <th>创帖人</th>
-                        <th>是否置顶</th>
-                        <th>回复数</th>
-                        <th>点赞数</th>
-                        <th>浏览数</th>
-                        <th>所在交流区</th>
+                        <th>序号</th>
+                        <th>敏感词</th>
+                        <th>是否启用</th>
                         <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
-                        <c:forEach items="${pageInfo.list}" var="article">
-                            <tr class="articleTr">
-                                <td width="15%">标题</td>
-                                <td width="30%" class="line-limit-length">${article.content}</td>
-                                <td width="5%" class="line-limit-length">${article.senderName}</td>
-                                <td width="5%" class="line-limit-length">${article.isTopStr}</td>
-                                <td width="5%">${article.replyCount}</td>
-                                <td width="5%">${article.upvoteCount}</td>
-                                <td width="5%">${article.browseCount}</td>
-                                <td width="15%">${article.zoneIdStr}</td>
+                        <c:forEach items="${pageInfo.list}" var="word" varStatus="vs">
+                            <tr>
+                                <td width="15%">${vs.index+1}</td>
+                                <td width="30%" class="line-limit-length">${word.word}</td>
+                                <td width="5%" class="line-limit-length">${word.statusStr}</td>
                                 <td width="15%">
-                                    <%--<a href="/article/deleteArticle.do?id=${article.articleId}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-primary">屏蔽</a>--%>
-                                    <a href="${pageContext.request.contextPath}/article/deleteArticle.do?id=${article.articleId}" role="button" class="btn btn-primary">删除</a>
-                                    <c:if test="${article.isTop==0}">
-                                        <a href="${pageContext.request.contextPath}/article/changeStatus.do?id=${article.articleId}&isTop=1" role="button" class="btn btn-danger" >置顶</a>
+                                    <c:if test="${word.status==0}">
+                                        <a href="/word/changeStatus.do?id=${article.articleid}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-primary" >启用</a>
                                     </c:if>
-                                    <c:if test="${article.isTop==1}">
-                                        <a href="${pageContext.request.contextPath}/article/changeStatus.do?id=${article.articleId}&isTop=0" role="button" class="btn btn-info" >取消</a>
+                                    <c:if test="${word.status==1}">
+                                        <a href="/word/changeStatus.do?id=${article.articleid}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-danger" >停用</a>
                                     </c:if>
                                 </td>
                             </tr>
@@ -164,6 +123,33 @@
                     </nav>
                 </div>
             </div>
+
+            <!-- 模态框（Modal） -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                新增加敏感词
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <textarea class="form-control" rows="1" name="title" id="detail_title" ></textarea>
+                            <span id="span1"></span>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                            </button>
+                            <button id="wordBtn" type="button" class="btn btn-primary">
+                                保存
+                            </button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
         </div><!-- /.dept_info -->
         <!-- 尾部-->
         <%@ include file="commom/foot.jsp"%>
@@ -173,14 +159,25 @@
 
 <%--<%@ include file="ArticleAdd.jsp"%>--%>
 <%@ include file="ArticleUpdate.jsp"%>
-
 <script>
     function searchArticle(data) {
-        location.href="${pageContext.request.contextPath}/article/findByPage.do?pageNum="+data+"&pageSize=5";
+        location.href="${pageContext.request.contextPath}/word/findByPage.do?pageNum="+data+"&pageSize=5";
     }
 
-    $(".articleTr").dblclick(function () {
-        alert("帖子详情");
+    $("#wordBtn").click(function () {
+        $.ajax({
+            url:"${pageContext.request.contextPath}/word/addWord.do",
+            type:"POST",
+            data:{"word":$("#detail_title").val()},
+            contentType:"application/json;charset=UTF-8",
+            success:function (d) {
+                if ($("#detail_title").val()=="") {
+                    $("#span1").css("color","red").html("请输入敏感词");
+                }else {
+                    location.reload();
+                }
+            }
+        })
     })
 </script>
 </body>

@@ -64,9 +64,14 @@
                                 <td width="10%" class="line-limit-length">${reports.reportUserName}</td>
                                 <td width="20%" class="line-limit-length">${reports.reportTime}</td>
                                 <td width="20%">
-                                    <a href="/article/deleteArticle.do?id=${article.articleid}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-primary">相关帖子</a>
-                                    <a href="/article/changeStatus.do?id=${article.articleid}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-danger" >屏蔽</a>
-                                    <a href="/article/changeStatus.do?id=${article.articleid}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-info" >驳回</a>
+                                    <a id="articleDet2ail" onclick="articleDetail(${reports.articleId})" class="btn btn-primary" data-toggle="modal" data-target="#myModal">相关帖子</a>
+                                    <c:if test="${reports.reportStatus==0}">
+                                        <a href="${pageContext.request.contextPath}/report/changeIsReport.do?articleId=${article.articleId}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-danger" >屏蔽</a>
+                                        <a href="${pageContext.request.contextPath}/report/changeStatus.do?reportId=${reports.reportId}" role="button" class="btn btn-info" >驳回</a>
+                                    </c:if>
+                                    <c:if test="${reports.reportStatus==1}">
+                                        <a href="${pageContext.request.contextPath}/article/changeStatus.do?id=${article.articleId}&isTop=0" role="button" class="btn btn-info" >取消</a>
+                                    </c:if>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -109,13 +114,13 @@
                             <!--下一页-->
                             <li>
                                 <c:if test="${pageInfo.hasNextPage}">
-                                    <a href="javascript:void(0)" onclick="searchArticle('${pageInfo.pageNum+1}')"
+                                    <a href="#" onclick="searchArticle('${pageInfo.pageNum+1}')"
                                        aria-label="Next">
                                         <span aria-hidden="true">»</span>
                                     </a>
                                 </c:if>
                             </li>
-                            <li><a href="javascript:void(0)" onclick="searchArticle('${pageInfo.pages}')">尾页</a></li>
+                            <li><a href="#" onclick="searchArticle('${pageInfo.pages}')">尾页</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -123,11 +128,62 @@
         </div><!-- /.dept_info -->
         <!-- 尾部-->
         <%@ include file="commom/foot.jsp"%>
+
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">帖子信息详情</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal article_detail_form">
+                            <div class="form-group">
+                                <label for="detail_title" class="col-sm-2 control-label">标题</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" rows="3" name="title" id="detail_title" disabled>${article.title}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="detail_content" class="col-sm-2 control-label">内容</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" rows="3" name="content" id="detail_content" disabled>${article.content}</textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
     </div><!-- /.hrms_dept_body -->
 
 </div><!-- /.hrms_dept_container -->
 
 <%--<%@ include file="ArticleAdd.jsp"%>--%>
 <%@ include file="ArticleUpdate.jsp"%>
+<script>
+    function searchArticle(data) {
+        location.href="${pageContext.request.contextPath}/report/findByPage.do?pageNum="+data+"&pageSize=5";
+    }
+
+    function articleDetail(articleId) {
+        $.ajax({
+            url:"${pageContext.request.contextPath}/article/findByIdManager.do",
+            type:"GET",
+            data:{"articleId":articleId},
+            contentType:"application/json;charset=UTF-8",
+            success:function (d) {
+                alert(125)
+                /*$("#detail_title").html(d.title);
+                $("#detail_content").html(d.content);*/
+            }
+        })
+    }
+</script>
 </body>
 </html>
