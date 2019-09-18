@@ -164,7 +164,7 @@ public class Article implements Serializable {
                 ", replyCount=" + replyCount +
                 ", upvoteCount=" + upvoteCount +
                 ", browseCount=" + browseCount +
-                ", ZoneId=" + ZoneId +
+                ", ZoneId=" + zoneId +
                 ", isReport=" + isReport +
                 ", comments=" + comments +
                 '}';

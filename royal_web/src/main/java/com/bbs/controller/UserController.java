@@ -27,6 +27,7 @@ public class UserController {
             if (resultUser != null){
                 if (userName.equals(resultUser.getUserName()) && userPass.equals(resultUser.getUserPass())) {
                     request.getSession().setAttribute("user",resultUser);
+
                     return "{\"msg\":\"0\"}";
                 } else {
                     return "{\"msg\":\"1\"}";
