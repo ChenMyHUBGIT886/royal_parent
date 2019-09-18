@@ -19,6 +19,7 @@ public interface ArticleDao {
 
     @Select("select * from bbs_article_table where articleId = #{articleId}")
     @Results({
+            @Result(id = true,property = "articleId",column = "articleId"),
             @Result(property = "userInfo",column = "senderName" ,javaType = UserInfo.class,
                 one = @One(select = "com.bbs.dao.UserInfoDao.findByUserName")
             ),
@@ -49,4 +50,22 @@ public interface ArticleDao {
 
     @Select("select * from bbs_article_table where articleId=#{articleId}")
     Article findById(Integer articleId);
+
+    @Select("select * from bbs_article_table where title like #{title} order by isTop desc")
+    List<Article> findLikeTitle(String title);
+
+    @Select("select * from bbs_article_table where articleId=#{articleId}")
+    @Results({
+            @Result(property = "userInfo",column = "senderName",one = @One(
+            select = "com.bbs.dao.UserInfoDao.findByUserName"
+    ))
+    })
+    Article findLikeComment(@Param("articleId") Integer articleId);
+
+
+    @Update("update bbs_article_table set replyCount = #{replyCount+1}")
+    void addReplyCount(Integer replyCount);
+
+    @Select("select * from bbs_article_table where articleId = #{articleId}")
+    Article findReplyCount(Integer articleId);
 }

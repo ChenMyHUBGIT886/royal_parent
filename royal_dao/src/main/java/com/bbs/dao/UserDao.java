@@ -19,5 +19,12 @@ public interface UserDao {
     @Update("update bbs_user_table set talkStatus=#{talkStatus}  where userId=#{id} ")
     void changeTalkStatus(@Param("id")Integer id,  @Param("talkStatus")Integer talkStatus);
 
+    @Update("update bbs_user_table set loginStatus = 1")
+    void loginStatus();
 
+    @Update("update bbs_user_table set loginStatus = 0")
+    void logoutStatus();
+
+    @Select("select * from bbs_user_table where loginStatus = 1")
+    List<UserInfo> findAllLoginStatus();
 }
