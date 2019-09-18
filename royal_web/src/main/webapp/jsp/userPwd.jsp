@@ -52,36 +52,49 @@
             <div class="user-info-t" style="height:20px;"></div>
             <div class="user-info-l l">
                 <div class="user-info-l-t">
-                    <img src="images/default.png" alt=""/>
-                    <div class="username">张无忌</div>
+                    <img src="${user.picUrl}" alt=""/>
+                    <div class="username">${user.userName}</div>
                 </div>
                 <ul class="user-info-l-b">
                     <li><i class="info-icon"></i>我的资料</li>
                     <li class="cur"><i class="safe-icon"></i>修改密码</li>
+
                 </ul>
             </div>
 
 
             <div class="user-info-r r">
                 <ul class="clearfix hd">
-                    <li><a href="getUser.do?method=userInfo">个人信息</a></li>
-                    <li class="cur"><a href="getUser.do?method=userPwd">修改密码</a></li>
+                    <li><a href="${pageContext.request.contextPath}/jsp/userInfo.jsp">个人信息</a></li>
+                    <li class="cur"><a href="${pageContext.request.contextPath}/jsp/userPwd.jsp">修改密码</a></li>
+                    <c:if test="${user.role==1}">
+                        <li><a href="${pageContext.request.contextPath}/jsp/userInfoApply.jsp">申请高级用户</a></li>
+                    </c:if>
+                    <c:if test="${user.role==3}">
+                        <li><a href="${pageContext.request.contextPath}/jsp/userInfoNewZone.jsp">开辟新板块</a></li>
+                    </c:if>
                 </ul>
                 <form action="${pageContext.request.contextPath}/userInfo/updatePwd.do" method="post">
+                    <input type="hidden" name="userId" value="${user.userId}">
                   <ul class="bd">
                     <li class="clearfix">
                         <div class="info-l"><i class="red">*</i>旧密码：</div>
-                        <div class="info-r"><input type="password" name="oldPassword" class="txt"/></div>
+                        <div class="info-r"><input type="password" name="oldPassword" value="" class="txt"/></div>
                     </li>
                     <li class="clearfix">
                         <div class="info-l"><i class="red">*</i>新密码：</div>
-                        <div class="info-r"><input type="password" name="newPassword" class="txt"/></div>
+                        <div class="info-r"><input type="password" name="newPassword" value="" class="txt"/></div>
                     </li>
                     <li class="clearfix">
                         <div class="info-l"></div>
                         <div class="info-r">
-						  <input type="submit" id="btn" value="保存"/>
-
+						  <input type="submit" class="btn" value="保存"/>
+                        <c:if test="${msg==1}">
+                            <span style="color:red;">修改成功！</span>
+                        </c:if>
+                            <c:if test="${msg==0}">
+                                <span style="color:red;">原始密码错误或新密码不能为空！</span>
+                            </c:if>
 						</div>
                     </li>
                   </ul>

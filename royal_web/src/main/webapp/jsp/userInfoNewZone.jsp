@@ -28,7 +28,7 @@
     <div class="hm-inner clearfix">
         <div class="hm-header-t clearfix">
             <h1 class="logo l">
-                <a href="javascript:;"><img src="../images/logo.png" height="64" width="168" alt=""/></a>
+                <a href="javascript:;"><img src="images/logo.png" height="64" width="168" alt=""/></a>
             </h1>
             <div class="search-box l">
                 <form action="javascript:;">
@@ -67,48 +67,41 @@
             <!--右侧用户信息-->
             <div class="user-info-r r">
                 <ul class="clearfix hd">
-                    <li class="cur"><a href="${pageContext.request.contextPath}/jsp/userInfo.jsp">个人信息</a></li>
-                    <li><a href="${pageContext.request.contextPath}/jsp/userPwd.jsp">修改密码</a></li>
-                    <c:if test="${user.role==1}">
-                        <li><a href="${pageContext.request.contextPath}/jsp/userInfoApply.jsp">申请高级用户</a></li>
-                    </c:if>
+                    <li><a href="${pageContext.request.contextPath}/jsp/userInfo.jsp">个人信息</a></li>
+                    <li ><a href="${pageContext.request.contextPath}/jsp/userPwd.jsp">修改密码</a></li>
                     <c:if test="${user.role==3}">
-                        <li><a href="${pageContext.request.contextPath}/jsp/userInfoNewZone.jsp">开辟新板块</a></li>
+                        <li  class="cur"><a href="${pageContext.request.contextPath}/jsp/userInfoNewZone.jsp">开辟新板块</a></li>
                     </c:if>
                 </ul>
 
 
-                <form action="${pageContext.request.contextPath}/userInfo/update.do" method="post" enctype="multipart/form-data">
-
-                    <input type="hidden" name="userId" value="${user.userId}">
+                <form action="#" method="post" >
+                    <input type="hidden" name="userName" id="username" value="${user.userName}">
                     <ul class="bd">
                         <li class="clearfix">
-                            <div class="info-l"><i class="red">*</i>用户名：</div>
-                            <div class="info-r"><input type="text" name="userName" class="txt" value="${user.userName}" readonly="readonly"/></div>
+                            <div class="info-l">板块名称：</div>
+                            <div class="info-r"><input type="text" id="zoneName" name="zoneName" class="txt" /></div>
                         </li>
                         <li class="clearfix">
-                            <div class="info-l">邮箱地址：</div>
-                            <div class="info-r"><input type="email" name="email" class="txt" value="${user.email}"/></div>
-                        </li>
-                        <li class="clearfix">
-                            <div class="info-l">上传头像：</div>
-                            <div class="info-r"><input type="file" name="file" class="file-btn"/></div>
+                            <div class="info-l">申请理由：</div>
+                            <div class="info-r">
+                                <textarea   id="reason" name="reason" class="txt"  placeholder="请在此输入申请理由"></textarea>
+                            </div>
                         </li>
                         <li class="clearfix">
                             <div class="info-l"></div>
                             <div class="info-r">
-                                <input type="submit" class="btn" value="保存"/>
-                                <c:if test="${msg==3}">
-                                    <span style="color:red;">修改成功！</span>
-                                </c:if>
-                                <c:if test="${msg==4}">
-                                    <span style="color:red;">请选择头像！</span>
-                                </c:if>
+                                <input type="button" id="btn1" class="btn" value="申请"/>
+                                <%--此处为button,不能是submit--%>
                             </div>
                         </li>
                     </ul>
                 </form>
+
+
             </div>
+
+
         </div>
     </div>
 </div>
@@ -117,14 +110,22 @@
 <!-- 底部 -->
 <jsp:include page="common/footer.jsp"/>
 
- <script>
-     $(function () {
-         $("#btn").click(function () {
-             alert("修改成功");
-         })
-     })
-
- </script>
+<script>
+    $(function () {
+        $("#btn1").click(function () {
+            $.ajax({
+                type:"POST",
+                data:JSON.stringify({'userName':$("#username").val(),'zoneName':$("#zoneName").val(),'reason':$("#reason").val()}),
+                contentType:"application/json;charset=utf-8",
+                url:"${pageContext.request.contextPath}/zoneApply/save.do",
+                dataType:"json",
+                success:function (data) {
+                     alert("申请成功，等待审核")
+                }
+            })
+        })
+    })
+</script>
 
 </body>
 </html>

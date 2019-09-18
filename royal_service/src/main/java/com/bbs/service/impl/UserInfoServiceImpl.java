@@ -17,4 +17,21 @@ public class UserInfoServiceImpl implements UserInfoService {
     public void update(UserInfo userInfo) {
         userInfoDao.update(userInfo);
     }
+
+    @Override
+    public UserInfo findById(String userId) {
+       UserInfo userInfo=userInfoDao.findById(userId);
+
+        return userInfo;
+    }
+
+    @Override
+    public void updatePsw(String userId,String newPassword) {
+        userInfoDao.updatePsw(userId,newPassword);
+    }
+
+    @Override
+    public void apply(String userId) {
+        userInfoDao.apply(userId);
+    }
 }
