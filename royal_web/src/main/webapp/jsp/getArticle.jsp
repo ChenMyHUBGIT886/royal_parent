@@ -14,11 +14,11 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/hm-bbs.js"></script>
     <style>
-        <%--空心--%>
+
         .floor-con .icon-report i {
             background-position: 0px 0px;
         }
-        <%--实心--%>
+
         .floor-con .icon-feedback1 i {
             background-position: -112px -32px;
         }
@@ -120,7 +120,7 @@
                         <span>
                             <span id="myUpVote" class="icon-report" style="right: 150px"><a
                                     href="javascript:void(0)"> <i></i> 点赞</a></span>
-                            <span class="icon-report"><a href="javascript:void(0)" onclick="showReplog()"> <i></i> 举报</a></span>
+                            <span class="icon-feedback"><a href="javascript:void(0)" onclick="showReplog()"> <i></i> 举报</a></span>
                             <span class="icon-comment" style="right: 80px"><a
                                     href="javaScript:inspect()"> <i></i> 评论</a></span>
                             <%--<span class="icon-comment"><a href="#comment"> <i></i> 评论</a></span>--%>
@@ -205,7 +205,7 @@
 
 <!-- 回复弹出框 -->
 <form action="" method="post">
-    <div class="pop-box ft-box">
+    <div class="pop-box ft-box" id="popbox2">
         <div class="mask"></div>
         <div class="win">
             <div class="win_hd">
@@ -228,29 +228,29 @@
 </form>
 
 <!-- 举报弹出框 -->
-<%--<form action="${pageContext.request.contextPath}/report/saveReportInfoByIdAndValue.do" method="post">--%>
-    <%--<div class="pop-box ft-box">--%>
-        <%--<div class="mask"></div>--%>
-        <%--<div class="win">--%>
-            <%--<div class="win_hd">--%>
-                <%--<h4 class="l">举报本贴</h4>--%>
-                <%--<span class="close r">&times;</span>--%>
-            <%--</div>--%>
-            <%--<div class="win_bd">--%>
-                <%--<div class="win_bd_b">--%>
-                    <%--<textarea id="reportContent" name="reportContent" placeholder="举报内容限于400字以内"></textarea>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-            <%--<div class="win_ft">--%>
-                <%--<div class="win_ft_in">--%>
-                    <%--&lt;%&ndash;<input type="submit" class="btn" value="举报" id="btn_submit"/>&ndash;%&gt;--%>
-                    <%--<input type="button" class="btn" value="举报" id="btn_submit"/>--%>
-                    <%--<input type="hidden" id="articleId4Report" name="articleId4Report"/>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-    <%--</div>--%>
-<%--</form>--%>
+<form action="${pageContext.request.contextPath}/report/saveReportInfoByIdAndValue.do" method="post">
+    <div class="pop-box ft-box" id="popbox1">
+        <div class="mask"></div>
+        <div class="win">
+            <div class="win_hd">
+                <h4 class="l">举报本贴</h4>
+                <span class="close r">&times;</span>
+            </div>
+            <div class="win_bd">
+                <div class="win_bd_b">
+                    <textarea id="reportContent" name="reportContent" placeholder="举报内容限于400字以内"></textarea>
+                </div>
+            </div>
+            <div class="win_ft">
+                <div class="win_ft_in">
+                    <%--<input type="submit" class="btn" value="举报" id="btn_submit"/>--%>
+                    <input type="button" class="btn" value="举报" id="btn_submit"/>
+                    <input type="hidden" id="articleId4Report" name="articleId4Report"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 
 
 <div class="fixedBar" id="j_fixedBar">
@@ -261,6 +261,7 @@
 
 </body>
 
+<%--举报--%>
 <script type="text/javascript">
 //弹出回复框
 function showDialog(num, commentId) {
@@ -269,9 +270,10 @@ function showDialog(num, commentId) {
 		return;
 	}
 	// $("#commentId").val(commentId);
-    $('.pop-box').css('display', 'block');
+    $("#popbox2").css('display', 'block');
     // $("#floorSpan").html(num);
 }
+
 
 //弹出举报框
 function showReplog(articleId) {
@@ -293,12 +295,17 @@ function showReplog(articleId) {
                 alert("不能举报自己的帖子~")
             } else{
                 $("#articleId4Report").val(${article.articleId});
-                $('.pop-box').css('display', 'block');
+                $("#popbox1").css('display', 'block');
                 // $("#floorSpan").html(num);
                 // $("#btn_submit").click(function () {
                 //     alert("举报提交成功")
                 // })
                 $("#btn_submit").click(function() {
+                    if($("#reportContent").val().length == 0) {
+                        alert("举报内容不能为空")
+                        return;
+                    }
+
                     $.ajax({
                         url: "${pageContext.request.contextPath}/report/saveReportInfoByIdAndValue.do",
                         // contentType:"application/json;charset=UTF-8",
@@ -319,6 +326,7 @@ function showReplog(articleId) {
 }
 </script>
 
+<%--点赞--%>
 <script>
 
     //1：判断是否有用户登录
@@ -370,6 +378,7 @@ function showReplog(articleId) {
                             dataType:"json",
                             type:"post",
                             success:function (d) {
+                                //d是true的时候表示前后台的isup相同
                                 // alert(d.isUpvote)
                                 $("#myUpVote").attr("class","icon-report")
                                 location.reload()

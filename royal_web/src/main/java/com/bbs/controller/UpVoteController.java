@@ -25,6 +25,9 @@ public class UpVoteController {
     //从ajax处获取到请求参数，传递到后台更新点赞状态
     @RequestMapping("/changeIsUpvote.do")
     public @ResponseBody UpVote changeIsUpvote (@RequestBody UpVote upVote) {
+        //对比数据库的isupvote是否和前台的相同
+        //相同就返回true
+        //不同就更改数据库的值返回false
         upVoteService.changeIsUpvote(upVote);
         return upVote;
     }
