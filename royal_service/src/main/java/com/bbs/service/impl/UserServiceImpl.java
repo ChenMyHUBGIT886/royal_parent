@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changeRole(Integer id, Integer role) throws Exception {
+    public void changeRole(Integer id, Integer roles) throws Exception {
 //        Integer roles =null;
 //        if (role==0){
 //            roles=1;
@@ -37,7 +37,15 @@ public class UserServiceImpl implements UserService {
 //        }
 
 
-        userDao.changeRole(id, role);
+        userDao.changeRole(id, roles);
+        userDao.isupdating(id,0);
+
+    }
+
+    @Override
+    public void downgradeRole(Integer id, Integer roles) throws Exception {
+
+        userDao.downgradeRole(id, roles);
     }
 
     @Override
@@ -63,5 +71,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserInfo> findAllLoginStatus() {
         return userDao.findAllLoginStatus();
+    }
+
+    @Override
+    public List<UserInfo> userSearchForm(UserInfo userInfo, int page, int size) throws Exception {
+        String userName = userInfo.getUserName();
+        Integer role = userInfo.getRole();
+        userInfo.setUserName(userName.trim());
+        userInfo.setRole(role);
+        PageHelper.startPage(page,size);
+        return userDao.userSearchForm(userName,role);
+    }
+   //驳回
+    @Override
+    public void isupdating(Integer id, Integer isupdating) throws Exception{
+        userDao.isupdating(id,isupdating);
     }
 }

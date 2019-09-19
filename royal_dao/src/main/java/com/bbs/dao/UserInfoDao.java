@@ -21,7 +21,7 @@ public interface UserInfoDao {
     @Update("update bbs_user_table set userPass=#{newPassword} where userId=#{userId}")
     void updatePsw(@Param(value = "userId") String userId,@Param(value = "newPassword") String newPassword);
     //用户升级
- @Update("update bbs_user_table set role=2 where userId=#{userId}")
+ @Update("update bbs_user_table set isupdating=1 where userId=#{userId}")
  void apply(String userId);
 }
 

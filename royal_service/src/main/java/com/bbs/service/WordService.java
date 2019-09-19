@@ -7,7 +7,9 @@ import java.util.List;
 public interface WordService {
     List<Word> findByPage(int pageNum, int pageSize);
 
-    void addWord(String word);
-
     List<String> findByWordStatus();
+
+    void addWord(String word) throws Exception;
+
+    void changeStatus(Integer wordId, Integer status);
 }

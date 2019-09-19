@@ -28,18 +28,12 @@
     <div class="hm-inner clearfix">
         <div class="hm-header-t clearfix">
             <h1 class="logo l">
-                <a href="javascript:;"><img src="images/logo.png" alt=""/></a>
+                <a href="javascript:;"><img src="../images/logo.png" height="64" width="168" alt=""/></a>
             </h1>
-            <div class="search-box l">
-                <form action="javascript:;">
-                    <input type="text" class="txt l" placeholder="请输入关键字">
-                    <input type="button" value="搜索" class="btn l"/>
-                </form>
-            </div>
         </div>
         <div class="hm-header-b">
             <i class="hm-ico-home"></i>
-            <a href="index.do">首页</a><span>></span>修改密码
+            <a href="${pageContext.request.contextPath}/zone/findAll.do">首页</a><span>></span>修改密码
         </div>
     </div>
 </div>
@@ -58,7 +52,12 @@
                 <ul class="user-info-l-b">
                     <li><i class="info-icon"></i>我的资料</li>
                     <li class="cur"><i class="safe-icon"></i>修改密码</li>
-
+                    <c:if test="${user.role==1}">
+                        <li><i class="info-icon"></i>申请高级用户</li>
+                    </c:if>
+                    <c:if test="${user.role==3}">
+                        <li><i class="info-icon"></i>开辟新板块</li>
+                    </c:if>
                 </ul>
             </div>
 

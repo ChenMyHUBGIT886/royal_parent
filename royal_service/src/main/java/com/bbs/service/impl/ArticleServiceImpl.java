@@ -61,6 +61,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Article findById(Integer articleId) {
         Article article=articleDao.findById(articleId);
+
         return article;
     }
 
@@ -72,7 +73,7 @@ public class ArticleServiceImpl implements ArticleService {
      * @return
      */
     @Override
-    public List<Article> findByPage(int pageNum, int pageSize) {
+    public List<Article> findByPage(int pageNum, int pageSize) throws Exception {
         PageHelper.startPage(pageNum, pageSize);
         return articleDao.findAllManager();
     }
@@ -84,7 +85,7 @@ public class ArticleServiceImpl implements ArticleService {
      * @param isTop
      */
     @Override
-    public void changeStatus(Integer articleId, Integer isTop) {
+    public void changeStatus(Integer articleId, Integer isTop) throws Exception {
         articleDao.changeStatus(articleId, isTop);
     }
     @Override
@@ -115,7 +116,7 @@ public class ArticleServiceImpl implements ArticleService {
      * @param articleId
      */
     @Override
-    public void deleteArticle(Integer articleId) {
+    public void deleteArticle(Integer articleId) throws Exception {
         articleDao.deleteArticle(articleId);
     }
 
@@ -126,7 +127,7 @@ public class ArticleServiceImpl implements ArticleService {
      * @return
      */
     @Override
-    public Article findByIdManager(Integer articleId) {
+    public Article findByIdManager(Integer articleId) throws Exception {
         return articleDao.findByIdManager(articleId);
     }
 
@@ -182,4 +183,32 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
 
+
+    @Override
+    public List<Article> findByCondition(Article article, int page, int size) {
+        String senderName = article.getSenderName();
+        String title = article.getTitle();
+        if(senderName==null){
+            senderName="";
+        }
+        article.setSenderName(senderName.trim());
+        article.setTitle(title.trim());
+        PageHelper.startPage(page, size);
+        return articleDao.findByCondition(article);
+    }
+
+    @Override
+    public List<Article> findByTime() {
+       List<Article> list2=articleDao.findByTime();
+
+        return list2;
+    }
+
+    @Override
+    //查询发帖总数
+    public Integer findCount(String userName) {
+      Integer aticleCount= articleDao.findCount(userName);
+
+        return aticleCount;
+    }
 }
