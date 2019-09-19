@@ -30,4 +30,6 @@ public interface ArticleService {
     void deleteArticle(Integer articleId);
 
     Article findByIdManager(Integer articleId);
+    //模糊查询
+    List<Article> findByCondition(Article article, int page, int size);
 }

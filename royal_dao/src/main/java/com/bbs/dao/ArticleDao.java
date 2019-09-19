@@ -2,6 +2,7 @@ package com.bbs.dao;
 
 import com.bbs.domain.Article;
 import com.bbs.domain.UserInfo;
+import com.bbs.domain.Zone;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
@@ -12,6 +13,19 @@ import java.util.List;
 public interface ArticleDao {
 
     @Select("select * from bbs_article_table")
+    @Results(id = "map", value = {
+            @Result(id = true, column = "articleId", property = "articleId"),
+            @Result(column = "title", property = "title"),
+            @Result(column = "content", property = "content"),
+            @Result(column = "sendTime", property = "sendTime"),
+            @Result(column = "senderName", property = "senderName"),
+            @Result(column = "isTop", property = "isTop"),
+            @Result(column = "replyCount", property = "replyCount"),
+            @Result(column = "upvoteCount", property = "upvoteCount"),
+            @Result(column = "browseCount", property = "browseCount"),
+            @Result(column = "isReport", property = "isReport"),
+            @Result(column = "zoneId", property = "zone",one = @One(select = "com.bbs.dao.ZoneDao.findById"))
+    })
     List<Article> findAll();
 
     @Select("select * from bbs_article_table where zoneId=#{id} and isReport = 0 order by isTop desc")
@@ -85,4 +99,14 @@ public interface ArticleDao {
 
     @Select("select * from bbs_article_table where articleId = #{articleId}")
     Article findReplyCount(Integer articleId);
+
+
+    //模糊查询
+    /*条件查询*/
+    @Select("<script>"+"select * from bbs_article_table where 1=1"
+            + " <if test='title != 0 and title != null'> and title like concat('%',#{title},'%')</if> "
+            +"<if test='senderName != 0 and senderName != null'> and senderName like concat('%',#{senderName},'%')</if> "
+            +"</script>")
+    @ResultMap("map")
+    List<Article> findByCondition(Article article);
 }

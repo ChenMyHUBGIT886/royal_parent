@@ -35,6 +35,16 @@ public class Article implements Serializable {
     private Integer browseCount; //浏览数
     private Integer zoneId;//所在交流区
     private String zoneIdStr;
+    private Zone zone;
+
+    public Zone getZone() {
+        return zone;
+    }
+
+    public void setZone(Zone zone) {
+        this.zone = zone;
+    }
+
     private Integer isReport; //举报状态
     private List<Comment> comments; //评论
 
@@ -45,7 +55,6 @@ public class Article implements Serializable {
     public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
     }
-
     public String getSendTimeStr() {
         sendTimeStr = DateUtils.date2String(sendTime, "yyyy-MM-dd HH-mm-ss");
         return sendTimeStr;
@@ -198,6 +207,7 @@ public class Article implements Serializable {
                 ", browseCount=" + browseCount +
                 ", zoneId=" + zoneId +
                 ", zoneIdStr='" + zoneIdStr + '\'' +
+                ", zone=" + zone +
                 ", isReport=" + isReport +
                 ", comments=" + comments +
                 '}';
