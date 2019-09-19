@@ -5,6 +5,7 @@ import com.bbs.service.UserService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -70,30 +71,73 @@ public class UserController {
         return mv;
     }
 
-   //用户组管理
+   //(升级用户)用户组管理
     @RequestMapping("/changeRole.do")
-    public String changeRole(
+    public String changeRole(int page,UserInfo userInfo,
             @RequestParam(name = "id",required = true) Integer id,
-            @RequestParam(name = "role",required = true) Integer role)throws Exception{
-     userService.changeRole(id,role);
+            @RequestParam(name = "roles",required = true) Integer roles)throws Exception{
+        String userName = userInfo.getUserName();
+        Integer role = userInfo.getRole();
+        userService.changeRole(id,roles);
 
 
-      return "redirect:findByPage.do";
+//      return "redirect:findByPage.do";
+        return "redirect:userSearchForm.do?page="+page+"&userName="+userName+"&role="+role;
+
     }
+    //降级用户
+    @RequestMapping("/downgradeRole.do")
+    public String downgradeRole(int page,UserInfo userInfo,
+                             @RequestParam(name = "id",required = true) Integer id,
+                             @RequestParam(name = "roles",required = true) Integer roles)throws Exception{
+        String userName = userInfo.getUserName();
+        Integer role = userInfo.getRole();
+        userService.downgradeRole(id,roles);
+
+
+//      return "redirect:findByPage.do";
+        return "redirect:userSearchForm.do?page="+page+"&userName="+userName+"&role="+role;
+
+    }
+
+
+
     //用户禁言功能
     @RequestMapping("/changeTalkStatus")
-    public String changeTalkStatus(
+    public String changeTalkStatus(int page,UserInfo userInfo,
             @RequestParam(name = "id",required = true) Integer id,
-            @RequestParam(name = "talkStatus",required = true) Integer talkStatus)throws  Exception{
-
+            @RequestParam(name = "talkStatus",required = true) Integer talkStatus) throws Exception {
+        String userName = userInfo.getUserName();
+        Integer role = userInfo.getRole();
         userService.changeTalkStatus(id,talkStatus);
-        return "redirect:findByPage.do";
+
+        return "redirect:userSearchForm.do?page="+page+"&userName="+userName+"&role="+role;
     }
-    // 模糊查询
+    // 用户模糊查询和分页
     @RequestMapping("/userSearchForm.do")
-    public ModelAndView userSearchForm(@RequestBody String body){
-
-
-        return null;
+    public String userSearchForm(UserInfo userInfo, Model model,
+                                 @RequestParam(name="page",required =true,defaultValue ="1") int page,
+                                 @RequestParam(name="size",required =true,defaultValue ="4") int size)throws Exception{
+//        ModelAndView mv = new ModelAndView();
+        List<UserInfo> user = userService.userSearchForm(userInfo,page,size);
+        PageInfo pageInfo = new PageInfo(user);
+        model.addAttribute("pageInfo",pageInfo);
+        model.addAttribute("condition",userInfo);
+//        mv.setViewName("UserPage");
+        return "UserPage";
     }
+
+    // 驳回
+    @RequestMapping("/isupdating")
+    public String isupdating(int page,UserInfo userInfo,
+                                   @RequestParam(name = "id",required = true) Integer id,
+                                   @RequestParam(name = "isupdating",required = true) Integer isupdating) throws Exception {
+        String userName = userInfo.getUserName();
+        Integer role = userInfo.getRole();
+        userService.isupdating(id,isupdating);
+
+        return "redirect:userSearchForm.do?page="+page+"&userName="+userName+"&role="+role;
+    }
+
+
 }

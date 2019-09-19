@@ -59,7 +59,7 @@ public class ArticleServiceImpl implements ArticleService {
      * @return
      */
     @Override
-    public List<Article> findByPage(int pageNum, int pageSize) {
+    public List<Article> findByPage(int pageNum, int pageSize) throws Exception {
         PageHelper.startPage(pageNum, pageSize);
         return articleDao.findAllManager();
     }
@@ -71,7 +71,7 @@ public class ArticleServiceImpl implements ArticleService {
      * @param isTop
      */
     @Override
-    public void changeStatus(Integer articleId, Integer isTop) {
+    public void changeStatus(Integer articleId, Integer isTop) throws Exception {
         articleDao.changeStatus(articleId, isTop);
     }
     @Override
@@ -102,7 +102,7 @@ public class ArticleServiceImpl implements ArticleService {
      * @param articleId
      */
     @Override
-    public void deleteArticle(Integer articleId) {
+    public void deleteArticle(Integer articleId) throws Exception {
         articleDao.deleteArticle(articleId);
     }
 
@@ -113,8 +113,21 @@ public class ArticleServiceImpl implements ArticleService {
      * @return
      */
     @Override
-    public Article findByIdManager(Integer articleId) {
+    public Article findByIdManager(Integer articleId) throws Exception {
         return articleDao.findByIdManager(articleId);
+    }
+
+    @Override
+    public List<Article> findByCondition(Article article, int page, int size) {
+        String senderName = article.getSenderName();
+        String title = article.getTitle();
+        if(senderName==null){
+            senderName="";
+        }
+        article.setSenderName(senderName.trim());
+        article.setTitle(title.trim());
+        PageHelper.startPage(page, size);
+        return articleDao.findByCondition(article);
     }
 
     @Override

@@ -20,6 +20,7 @@ public class Report implements Serializable {
     private String reportUserName; //举报人
     private Integer reportStatus; //处理状态
     private Integer articleId; //文章ID
+    private Article article;
 
     public Integer getReportId() {
         return reportId;
@@ -69,6 +70,14 @@ public class Report implements Serializable {
         this.articleId = articleId;
     }
 
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
+    }
+
     @Override
     public String toString() {
         return "Report{" +
@@ -78,6 +87,7 @@ public class Report implements Serializable {
                 ", reportUserName='" + reportUserName + '\'' +
                 ", reportStatus=" + reportStatus +
                 ", articleId=" + articleId +
+                ", article=" + article +
                 '}';
     }
 }

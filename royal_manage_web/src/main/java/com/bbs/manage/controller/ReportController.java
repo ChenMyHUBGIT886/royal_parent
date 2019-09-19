@@ -45,9 +45,9 @@ public class ReportController {
      * @return
      */
     @RequestMapping("/changeIsReport.do")
-    public String changeIsReport(int articleId) {
-        reportService.changeIsReport(articleId);
-        return "redirect:findByPage.do";
+    public String changeIsReport(int articleId, int isReport, int pageNum) throws Exception {
+        reportService.changeIsReport(articleId, isReport);
+        return "redirect:findByPage.do?pageNum=" + pageNum;
     }
 
     /**
@@ -56,7 +56,7 @@ public class ReportController {
      * @param reportId
      */
     @RequestMapping("/changeStatus.do")
-    public String changeStatus(int reportId) {
+    public String changeStatus(int reportId) throws Exception {
         reportService.changeStatus(reportId);
         return "redirect:findByPage.do";
     }

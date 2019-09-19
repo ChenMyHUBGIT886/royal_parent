@@ -64,13 +64,13 @@
                                 <td width="10%" class="line-limit-length">${reports.reportUserName}</td>
                                 <td width="20%" class="line-limit-length">${reports.reportTime}</td>
                                 <td width="20%">
-                                    <a id="articleDet2ail" onclick="articleDetail(${reports.articleId})" class="btn btn-primary" data-toggle="modal" data-target="#myModal">相关帖子</a>
-                                    <c:if test="${reports.reportStatus==0}">
-                                        <a href="${pageContext.request.contextPath}/report/changeIsReport.do?articleId=${article.articleId}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-danger" >屏蔽</a>
-                                        <a href="${pageContext.request.contextPath}/report/changeStatus.do?reportId=${reports.reportId}" role="button" class="btn btn-info" >驳回</a>
+                                    <a id="articleDet2ail" onclick="articleDetail('${reports.articleId}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">相关帖子</a>
+                                    <c:if test="${reports.article.isReport==0}">
+                                        <a href="${pageContext.request.contextPath}/report/changeIsReport.do?articleId=${reports.articleId}&isReport=1&pageNum=${pageInfo.pageNum}" role="button" class="btn btn-danger" >屏蔽</a>
+                                        <a href="${pageContext.request.contextPath}/report/changeStatus.do?reportId=${reports.reportId}&pageNum=${pageInfo.pageNum}" role="button" class="btn btn-info" >驳回</a>
                                     </c:if>
-                                    <c:if test="${reports.reportStatus==1}">
-                                        <a href="${pageContext.request.contextPath}/article/changeStatus.do?id=${article.articleId}&isTop=0" role="button" class="btn btn-info" >取消</a>
+                                    <c:if test="${reports.article.isReport==1}">
+                                        <a href="${pageContext.request.contextPath}/report/changeIsReport.do?articleId=${reports.articleId}&isReport=0&pageNum=${pageInfo.pageNum}" role="button" class="btn btn-info" >取消</a>
                                     </c:if>
                                 </td>
                             </tr>
@@ -143,13 +143,13 @@
                             <div class="form-group">
                                 <label for="detail_title" class="col-sm-2 control-label">标题</label>
                                 <div class="col-sm-8">
-                                    <textarea class="form-control" rows="3" name="title" id="detail_title" disabled>${article.title}</textarea>
+                                    <textarea class="form-control" rows="3" name="title" id="detail_title" disabled></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="detail_content" class="col-sm-2 control-label">内容</label>
                                 <div class="col-sm-8">
-                                    <textarea class="form-control" rows="3" name="content" id="detail_content" disabled>${article.content}</textarea>
+                                    <textarea class="form-control" rows="3" name="content" id="detail_content" disabled></textarea>
                                 </div>
                             </div>
                         </form>
@@ -178,9 +178,8 @@
             data:{"articleId":articleId},
             contentType:"application/json;charset=UTF-8",
             success:function (d) {
-                alert(125)
-                /*$("#detail_title").html(d.title);
-                $("#detail_content").html(d.content);*/
+                $("#detail_title").html(d.title);
+                $("#detail_content").html(d.content);
             }
         })
     }
