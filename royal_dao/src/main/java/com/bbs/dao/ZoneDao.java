@@ -1,10 +1,7 @@
 package com.bbs.dao;
 
 import com.bbs.domain.Zone;
-import org.apache.ibatis.annotations.Many;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -15,4 +12,12 @@ public interface ZoneDao {
 
     @Select("select * from bbs_zone_table where zoneId = #{zoneId}")
     Zone findByZoneId(Integer zoneId);
+
+    /**
+     * 根据zoneId查找zone
+     * @param id
+     * @return
+     */
+    @Select("select * from bbs_zone_table where zoneId=#{id}")
+     Zone findById(int id) throws Exception;
 }

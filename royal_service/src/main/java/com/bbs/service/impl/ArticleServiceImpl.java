@@ -116,4 +116,17 @@ public class ArticleServiceImpl implements ArticleService {
     public Article findByIdManager(Integer articleId) throws Exception {
         return articleDao.findByIdManager(articleId);
     }
+
+    @Override
+    public List<Article> findByCondition(Article article, int page, int size) {
+        String senderName = article.getSenderName();
+        String title = article.getTitle();
+        if(senderName==null){
+            senderName="";
+        }
+        article.setSenderName(senderName.trim());
+        article.setTitle(title.trim());
+        PageHelper.startPage(page, size);
+        return articleDao.findByCondition(article);
+    }
 }
