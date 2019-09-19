@@ -65,10 +65,10 @@
                                 <td width="5%" class="line-limit-length">${word.statusStr}</td>
                                 <td width="15%">
                                     <c:if test="${word.status==0}">
-                                        <a href="/word/changeStatus.do?id=${article.articleid}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-primary" >启用</a>
+                                        <a href="${pageContext.request.contextPath}/word/changeStatus.do?wordId=${word.wordId}&status=1&pageNum=${pageInfo.pageNum}" role="button" class="btn btn-primary" >启用</a>
                                     </c:if>
                                     <c:if test="${word.status==1}">
-                                        <a href="/word/changeStatus.do?id=${article.articleid}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-danger" >停用</a>
+                                        <a href="${pageContext.request.contextPath}/word/changeStatus.do?wordId=${word.wordId}&status=0&pageNum=${pageInfo.pageNum}" role="button" class="btn btn-danger" >停用</a>
                                     </c:if>
                                 </td>
                             </tr>
@@ -165,10 +165,11 @@
     }
 
     $("#wordBtn").click(function () {
+        var word = $("#detail_title").val();
         $.ajax({
-            url:"${pageContext.request.contextPath}/word/addWord.do",
-            type:"POST",
-            data:{"word":$("#detail_title").val()},
+            url:"${pageContext.request.contextPath}/word/addWord.do?word="+word,
+            type:"GET",
+            data:{},
             contentType:"application/json;charset=UTF-8",
             success:function (d) {
                 if ($("#detail_title").val()=="") {

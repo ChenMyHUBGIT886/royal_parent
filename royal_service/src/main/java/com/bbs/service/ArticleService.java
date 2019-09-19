@@ -23,11 +23,11 @@ public interface ArticleService {
 
     void addReplyCount(Integer articleId);
 
-    List<Article> findByPage(int pageNum, int pageSize);
+    List<Article> findByPage(int pageNum, int pageSize) throws Exception;
 
-    void changeStatus(Integer articleId, Integer isTop);
+    void changeStatus(Integer articleId, Integer isTop) throws Exception;
 
-    void deleteArticle(Integer articleId);
+    void deleteArticle(Integer articleId) throws Exception;
 
-    Article findByIdManager(Integer articleId);
+    Article findByIdManager(Integer articleId) throws Exception;
 }

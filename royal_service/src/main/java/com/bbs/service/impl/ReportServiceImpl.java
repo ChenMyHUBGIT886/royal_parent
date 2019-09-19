@@ -23,7 +23,7 @@ public class ReportServiceImpl implements ReportService {
      * @return
      */
     @Override
-    public List<Report> findByPage(int pageNum, int pageSize) {
+    public List<Report> findByPage(int pageNum, int pageSize) throws Exception {
         PageHelper.startPage(pageNum, pageSize);
         return reportDao.findByPage();
     }
@@ -32,10 +32,11 @@ public class ReportServiceImpl implements ReportService {
      * 屏蔽举报帖子
      *
      * @param articleId
+     * @param isReport
      */
     @Override
-    public void changeIsReport(int articleId) {
-        reportDao.changeIsReport(articleId);
+    public void changeIsReport(int articleId, int isReport) throws Exception {
+        reportDao.changeIsReport(articleId, isReport);
     }
 
     /**
@@ -44,7 +45,7 @@ public class ReportServiceImpl implements ReportService {
      * @param reportId
      */
     @Override
-    public void changeStatus(int reportId) {
+    public void changeStatus(int reportId) throws Exception {
         reportDao.changeStatus(reportId);
     }
 }

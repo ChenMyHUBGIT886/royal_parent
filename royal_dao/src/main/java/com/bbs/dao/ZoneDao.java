@@ -12,4 +12,7 @@ public interface ZoneDao {
 
     @Select("select * from bbs_zone_table")
     List<Zone> findAll();
+
+    @Select("select * from bbs_zone_table where zoneId = #{zoneId}")
+    Zone findByZoneId(Integer zoneId);
 }
