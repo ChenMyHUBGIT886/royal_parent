@@ -21,11 +21,15 @@ public interface UserService {
 
     void loginStatus();
 
-    void logoutStatus();
+    void logoutStatus(Integer userId);
 
     List<UserInfo> findAllLoginStatus();
+
+
     List<UserInfo> userSearchForm(UserInfo userInfo, int page, int size) throws Exception;
 
     //申请审核 驳回
     void isupdating(Integer id, Integer isupdating) throws Exception;
+
+    boolean findTalkStatusByName(String senderName);
 }

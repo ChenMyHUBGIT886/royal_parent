@@ -69,11 +69,15 @@
 
         <!-- 主体部分 -->
         <div class="hm-bbs-main border-lrb clearfix">
-            <!-- 左侧列表 -->
+
+
             <div class="list-view l">
                 <ul>
-<%--                    帖子显示列表--%>
+                    <c:if test="${empty articleList}">
+                        <span  style="margin-left: 220px;font-size: 30px"><a href="javascript:;" onclick="showLoginZ()" style="color: yellowgreen">空空如也 点击<span style="color: red">发帖</span>记录生活</a></span>
+                    </c:if>
                     <c:forEach items="${articleList}" var="article">
+
                         <c:if test="${article.isTop==1}">
                              <li class="clearfix ding">
                                 <div class="hm-index-title">
@@ -106,15 +110,14 @@
                                     <span class="icon-talk"><i></i>0</span>
                                 </div>
                             </li>
+
                         </c:if>
 
                     </c:forEach>
                 </ul>
             </div>
-
-
             <!-- 右侧侧边栏,在线用户 -->
-            <div class="aside l">
+            <div style="float: right" class="aside l">
                 <div class="aside-box">
                     <h3 class="t">
                         <a href="javascript:;">在线用户 *${userStatusList.size()}*</a>
@@ -129,8 +132,6 @@
                     </ul>
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>
@@ -142,7 +143,7 @@
 
 <!-- 右边发帖，回顶部 -->
 <div class="fixedBar" id="j_fixedBar">
-    <c:if test="${not empty user}">
+    <c:if test="${not empty user and user.talkStatus==0}">
     <a id="newTopicBtn" href="javascript:;" onclick="showLoginZ()" class="newTopic"><span></span>发帖</a>
     </c:if>
     <a href="#" class="goTop"><i></i><span>返回<br/>顶部</span></a>
@@ -159,7 +160,7 @@
             </div>
             <div class="win_bd">
                 <div class="win_bd_t">
-                    <input type="text" id="title" name="title" placeholder="帖子标题"/>
+                    <input required="required" type="text" id="title" name="title" placeholder="帖子标题"/>
                 </div>
                 <div class="win_bd_b">
                     <textarea id="content" name="content" placeholder="正文"></textarea>

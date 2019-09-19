@@ -20,7 +20,7 @@ public interface WordDao {
     //敏感词启用和禁用
     @Update("update bbs_word_table set status = #{status} where wordId = #{wordId}")
     void changeStatus(@Param("wordId") Integer wordId, @Param("status") Integer status);
-    void addWord(String word);
+
 
     @Select("select word from bbs_word_table where status = 1")
     List<String> findByWordStatus();

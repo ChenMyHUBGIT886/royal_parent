@@ -91,7 +91,10 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<Article> findLikeTitle(String title) {
         title = "%"+title+"%";
-        return articleDao.findLikeTitle(title);
+        List<Article> likeTitle = articleDao.findLikeTitle(title);
+        List<String> wordList = wordService.findByWordStatus();
+        List<Article> articles = filtrationWord(likeTitle, wordList);
+        return articles;
     }
 
     @Override

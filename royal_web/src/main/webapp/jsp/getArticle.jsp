@@ -358,6 +358,8 @@ function showLogin() {
                 if (data.msg == 1){
                     alert("发表成功经验+3 告辞 ✌")
                     location.reload();
+                }else if (data.msg == 0) {
+                    alert("您已被禁言，请联系管理员")
                 }
             }
 
@@ -375,6 +377,10 @@ function showLogin() {
                 if (data.msg == 1){
                     alert("回复成功经验+3 告辞 ✌")
                     location.reload();
+                }else if (data.msg == 0) {
+                    alert("内容不能为空")
+                } else if (data.msg == 3) {
+                    alert("您已被禁言，请联系管理员")
                 }
             }
 

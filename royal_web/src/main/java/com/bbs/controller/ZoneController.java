@@ -33,8 +33,7 @@ public class ZoneController {
         List<Zone> list = zoneService.findAll();
         request.getSession().setAttribute("zoneList",list);
         ModelAndView mv = articleController.findByZoneId(1);
-        List<UserInfo> userList = userService.findAllLoginStatus();
-        mv.addObject("userStatusList",userList);
+
         return mv;
     }
 

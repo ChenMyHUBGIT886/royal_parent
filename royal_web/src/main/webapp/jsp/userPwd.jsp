@@ -55,7 +55,7 @@
                     <c:if test="${user.role==1}">
                         <li><i class="info-icon"></i>申请高级用户</li>
                     </c:if>
-                    <c:if test="${user.role==3}">
+                    <c:if test="${user.role==2}">
                         <li><i class="info-icon"></i>开辟新板块</li>
                     </c:if>
                 </ul>
@@ -69,7 +69,7 @@
                     <c:if test="${user.role==1}">
                         <li><a href="${pageContext.request.contextPath}/jsp/userInfoApply.jsp">申请高级用户</a></li>
                     </c:if>
-                    <c:if test="${user.role==3}">
+                    <c:if test="${user.role==2}">
                         <li><a href="${pageContext.request.contextPath}/jsp/userInfoNewZone.jsp">开辟新板块</a></li>
                     </c:if>
                 </ul>

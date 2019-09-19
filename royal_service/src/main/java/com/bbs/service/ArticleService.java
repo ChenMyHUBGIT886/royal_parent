@@ -31,6 +31,8 @@ public interface ArticleService {
 
     Article findByIdManager(Integer articleId) throws Exception;
 
+    List<Article> findByCondition(Article article, int page, int size);
+
     List<Article> findByTime();
 
     Integer findCount(String userName);

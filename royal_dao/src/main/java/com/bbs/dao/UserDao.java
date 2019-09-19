@@ -52,11 +52,12 @@ public interface UserDao {
     List<UserInfo> userSearchForm(@Param("userName")String userName,@Param("role") Integer role);
 
 
-    @Update("update bbs_user_table set loginStatus = 0")
-    void logoutStatus();
+    @Update("update bbs_user_table set loginStatus = 0 where userId = #{userId}")
+    void logoutStatus(Integer userId);
 
     @Select("select * from bbs_user_table where loginStatus = 1")
     List<UserInfo> findAllLoginStatus();
 
-
+    @Select("select talkStatus from bbs_user_table where userName = #{senderName}")
+    Integer findTalkStatusByName(String senderName);
 }

@@ -29,77 +29,86 @@ public class ArticleController {
 
     @RequestMapping("/findAll.do")
     @ResponseBody
-    public ModelAndView findAll(){
+    public ModelAndView findAll() {
         ModelAndView mv = new ModelAndView();
         List<Article> list = articleService.findAll();
-        mv.addObject("list",list);
+        mv.addObject("list", list);
         mv.setViewName("index");
         return mv;
     }
-@RequestMapping("/findByZoneId.do")
+
+    @RequestMapping("/findByZoneId.do")
     public ModelAndView findByZoneId(Integer zoneId) {
         List<Article> list = articleService.findByZoneId(zoneId);
         ModelAndView mv = new ModelAndView();
         List<UserInfo> userList = userService.findAllLoginStatus();
-        mv.addObject("userStatusList",userList);
+        mv.addObject("userStatusList", userList);
+
+        //查询在线用户
+        List<UserInfo> userStatusList = userService.findAllLoginStatus();
+        mv.addObject("userStatusList",userStatusList);
+
         //全部帖数
-    List<Article> list1 = articleService.findAll();
-    Integer  sumCount=list1.size();
-    mv.addObject("sumCount",sumCount);
-    //今日帖数
-    List<Article> list2=articleService.findByTime();
-    Integer  count=list2.size();
-    mv.addObject("count",count);
-    List<UserInfo> userList = userService.findAllLoginStatus();
-    mv.addObject("userStatusList",userList);
-        mv.addObject("articleList",list);
+        List<Article> list1 = articleService.findAll();
+        Integer sumCount = list1.size();
+        mv.addObject("sumCount", sumCount);
+        //今日帖数
+        List<Article> list2 = articleService.findByTime();
+        Integer count = list2.size();
+        mv.addObject("count", count);
+
+        mv.addObject("articleList", list);
         mv.setViewName("index");
         return mv;
     }
-     @RequestMapping("save.do")
-    public  String save(Article article){
+
+    @RequestMapping("save.do")
+    public String save(Article article) {
+        //判断发帖用户是否被禁言
+
+//        boolean flag = userService.findTalkStatusByName(article.getSenderName());
+
+
         articleService.save(article);
-        Article article1=articleService.findById(article.getArticleId());
-//         ModelAndView mv = new ModelAndView();
-//         mv.addObject("article",article1);
-//         mv.setViewName("getArticle");
-        return "redirect:/article/getArticle.do?articleId="+article1.getArticleId();
+        Article article1 = articleService.findById(article.getArticleId());
+        return "redirect:/article/getArticle.do?articleId=" + article1.getArticleId();
     }
 
-
     @RequestMapping("getArticle.do")
-    public ModelAndView getArticle(Integer articleId){
+    public ModelAndView getArticle(Integer articleId) {
         Article article = articleService.getArticle(articleId);
         article.setArticleId(articleId);
         ModelAndView mv = new ModelAndView();
-        mv.addObject("article",article);
+        mv.addObject("article", article);
         mv.setViewName("getArticle");
         return mv;
     }
+
     @RequestMapping("getArticleDesc.do")
-    public ModelAndView getArticleDesc(Integer articleId){
+    public ModelAndView getArticleDesc(Integer articleId) {
         Article article = articleService.getArticleDesc(articleId);
         ModelAndView mv = new ModelAndView();
-        mv.addObject("article",article);
+        mv.addObject("article", article);
         mv.setViewName("getArticle");
         return mv;
     }
 
     @RequestMapping("/findLikeComment.do")
-    public ModelAndView findLikeTitle(Integer articleId,String comment){
+    public ModelAndView findLikeTitle(Integer articleId, String comment) {
         ModelAndView mv = new ModelAndView();
-        Article article= articleService.findLikeComment(articleId,comment);
-        mv.addObject("article",article);
+        Article article = articleService.findLikeComment(articleId, comment);
+        mv.addObject("article", article);
         mv.setViewName("getArticle");
         return mv;
     }
+
     //查询发送总数
     @RequestMapping("findCount.do")
     @ResponseBody
-    public Map<String,Integer> findCount(@RequestParam("userName")String userName){
-        Integer aticleCount=articleService.findCount(userName);
+    public Map<String, Integer> findCount(@RequestParam("userName") String userName) {
+        Integer aticleCount = articleService.findCount(userName);
         HashMap<String, Integer> map = new HashMap<>();
-        map.put("msg",aticleCount);
+        map.put("msg", aticleCount);
         return map;
     }
 

@@ -77,7 +77,7 @@
                         <c:if test="${article.isTop!=1}">
                             <li>
                                 <div class="hm-index-title">
-                                    <a href="getArticle.do">${article.title}</a>
+                                    <a href="${pageContext.request.contextPath}/article/getArticle.do?articleId=${article.articleId}">${article.title}</a>
                                 </div>
                                 <div class="hm-index-con">${article.content}</div>
                                 <div class="hm-index-info l">

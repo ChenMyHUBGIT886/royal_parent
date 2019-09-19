@@ -64,8 +64,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void logoutStatus() {
-        userDao.logoutStatus();
+    public void logoutStatus(Integer userId) {
+        userDao.logoutStatus(userId);
     }
 
     @Override
@@ -86,5 +86,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public void isupdating(Integer id, Integer isupdating) throws Exception{
         userDao.isupdating(id,isupdating);
+    }
+
+    @Override
+    public boolean findTalkStatusByName(String senderName) {
+        Integer i = userDao.findTalkStatusByName(senderName);
+//        0代表未屏蔽发言（默认），1代表已屏蔽发言'
+        if (i == 0){
+            return true;
+        }
+        if (i == 1){
+            return false;
+        }
+        return false;
     }
 }

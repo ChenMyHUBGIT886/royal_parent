@@ -5,7 +5,7 @@ import com.bbs.domain.Word;
 import java.util.List;
 
 public interface WordService {
-    List<Word> findByPage(int pageNum, int pageSize);
+    List<Word> findByPage(int pageNum, int pageSize) throws Exception;
 
     List<String> findByWordStatus();
 

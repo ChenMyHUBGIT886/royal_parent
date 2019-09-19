@@ -40,8 +40,9 @@ public class UserController {
 
     @RequestMapping("/logout")
     public String logout(HttpServletRequest request){
+        UserInfo user = (UserInfo) request.getSession().getAttribute("user");
         request.getSession().removeAttribute("user");
-        userService.logoutStatus();
+        userService.logoutStatus(user.getUserId());
         return "redirect:/zone/findAll.do";
     }
 }
