@@ -9,4 +9,6 @@ public interface UpVoteService {
     void changeIsUpvote(UpVote upVote);
 
     Integer getUpVoteCount(Integer upvoteArticleId);
+
+    Integer findByIdAndName(Integer upvoteArticleId, String upvoteUserName);
 }

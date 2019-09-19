@@ -352,9 +352,16 @@ function showReplog(articleId) {
                         dataType: "json",
                         type: "post",
                         success: function (d) {
-                            // alert("ajax成功")
-                            $("#myUpVote").attr("class","icon-feedback1")
-                            location.reload()
+                            // true的时候改成实心
+                            if (d) {
+                                $("#myUpVote").attr("class","icon-feedback1")
+                                $('#upVoteCount').prop('lastChild').nodeValue = '${UpVoteCount + 1}'
+                            }
+                            //false的时候改成空心
+                            else {
+                                $("#myUpVote").attr("class","icon-report")
+                                $('#upVoteCount').prop('lastChild').nodeValue = '${UpVoteCount}'
+                            }
                         }
                     })
                 })
@@ -378,10 +385,14 @@ function showReplog(articleId) {
                             dataType:"json",
                             type:"post",
                             success:function (d) {
-                                //d是true的时候表示前后台的isup相同
-                                // alert(d.isUpvote)
-                                $("#myUpVote").attr("class","icon-report")
-                                location.reload()
+                                if (d) {
+                                    //d是true的时候表示前后台的is值相同,
+                                    $("#myUpVote").attr("class","icon-feedback1")
+                                    $('#upVoteCount').prop('lastChild').nodeValue = '${UpVoteCount + 1}'
+                                } else {
+                                    $("#myUpVote").attr("class","icon-report")
+                                    $('#upVoteCount').prop('lastChild').nodeValue = '${UpVoteCount - 1}'
+                                }
                             }
                         })
                     })
@@ -396,13 +407,18 @@ function showReplog(articleId) {
                             url: "${pageContext.request.contextPath}/upVote/changeIsUpvote.do",
                             contentType:"application/json;charset=UTF-8",
                             <%--data: '{"upvoteUserName": "${userbaojia.userName}", "upvoteArticleId": ${comment.articleId}, "isUpvote": 0}',--%>
-                            data:'{"upvoteUserName":"${upvote.upvoteUserName}","upvoteArticleId":${upvote.upvoteArticleId},"isUpvote": 1}',
+                            data:'{"upvoteUserName":"${upvote.upvoteUserName}","upvoteArticleId":${upvote.upvoteArticleId},"isUpvote": 0}',
                             dataType:"json",
                             type:"post",
                             success:function (d) {
-                                // alert(d.isUpvote)
-                                $("#myUpVote").attr("class","icon-feedback1")
-                                location.reload()
+                                if (d) {
+                                    //d是true的时候表示前后台的is值相同,
+                                    $("#myUpVote").attr("class","icon-feedback1")
+                                    $('#upVoteCount').prop('lastChild').nodeValue = '${UpVoteCount + 1}'
+                                } else {
+                                    $("#myUpVote").attr("class","icon-report")
+                                    $('#upVoteCount').prop('lastChild').nodeValue = '${UpVoteCount - 1}'
+                                }
                             }
                         })
                     })

@@ -25,4 +25,9 @@ public class UpVoteServiceImpl implements UpVoteService {
     public Integer getUpVoteCount(Integer upvoteArticleId) {
         return upVoteDao.getUpVoteCount(upvoteArticleId);
     }
+
+    @Override
+    public Integer findByIdAndName(Integer upvoteArticleId, String upvoteUserName) {
+        return upVoteDao.findByIdAndName(upvoteArticleId,upvoteUserName);
+    }
 }
