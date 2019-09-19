@@ -136,4 +136,9 @@ public interface ArticleDao {
             @Result(column = "zoneId", property = "zone",one = @One(select = "com.bbs.dao.ZoneDao.findById"))
     })
     List<Article> findByCondition(@Param("title") String title,@Param("senderName") String senderName);
+
+    @Select("SELECT * FROM bbs_article_table where sendTime>'2019-09-19 00:00:00' AND sendTime<'2019-10-20 23:59:59'")
+    List<Article> findByTime();
+    @Select("select count(*) from bbs_article_table where senderName=#{userName}")
+    Integer findCount(String userName);
 }
