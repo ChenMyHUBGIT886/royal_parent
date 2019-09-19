@@ -116,4 +116,19 @@ public class ArticleServiceImpl implements ArticleService {
     public Article findByIdManager(Integer articleId) {
         return articleDao.findByIdManager(articleId);
     }
+
+    @Override
+    public List<Article> findByTime() {
+       List<Article> list2=articleDao.findByTime();
+
+        return list2;
+    }
+
+    @Override
+    //查询发帖总数
+    public Integer findCount(String userName) {
+      Integer aticleCount= articleDao.findCount(userName);
+
+        return aticleCount;
+    }
 }

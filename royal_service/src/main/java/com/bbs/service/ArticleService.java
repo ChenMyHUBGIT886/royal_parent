@@ -30,4 +30,8 @@ public interface ArticleService {
     void deleteArticle(Integer articleId);
 
     Article findByIdManager(Integer articleId);
+
+    List<Article> findByTime();
+
+    Integer findCount(String userName);
 }

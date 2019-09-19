@@ -34,8 +34,8 @@
             <div class="hm-bbs-info-in l" style="margin-left:30px;">
                 <div class="t clearfix"><h2 class="l">王者荣耀</h2></div>
                 <p>
-                    <span>今日帖子<strong>99</strong></span>
-                    <span>全部帖子<strong>250</strong></span>
+                    <span>今日帖子<strong>${count}</strong></span>
+                    <span>全部帖子<strong>${sumCount}</strong></span>
                 </p>
             </div>
             <div class="search-box l">
@@ -147,7 +147,7 @@
 
 <!-- 发帖弹出框 -->
 <form action="${pageContext.request.contextPath}/article/save.do" method="post" >
-    <input type="hidden" name="senderName" value="${userInfo.userName}">
+    <input type="hidden" name="senderName" value="${user.userName}">
     <input type="hidden" name="zoneId" value="${zone.zoneId}">
     <div class="pop-box ft-box">
         <div class="mask"></div>
