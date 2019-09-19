@@ -353,14 +353,14 @@ function showReplog(articleId) {
                         type: "post",
                         success: function (d) {
                             // true的时候改成实心
-                            if (d) {
+                            if (d.boo) {
                                 $("#myUpVote").attr("class","icon-feedback1")
-                                $('#upVoteCount').prop('lastChild').nodeValue = '${UpVoteCount + 1}'
+                                $('#upVoteCount').prop('lastChild').nodeValue = d.isUpVote
                             }
                             //false的时候改成空心
                             else {
                                 $("#myUpVote").attr("class","icon-report")
-                                $('#upVoteCount').prop('lastChild').nodeValue = '${UpVoteCount}'
+                                $('#upVoteCount').prop('lastChild').nodeValue = d.isUpVote
                             }
                         }
                     })
@@ -385,13 +385,13 @@ function showReplog(articleId) {
                             dataType:"json",
                             type:"post",
                             success:function (d) {
-                                if (d) {
+                                if (d.boo) {
                                     //d是true的时候表示前后台的is值相同,
                                     $("#myUpVote").attr("class","icon-feedback1")
-                                    $('#upVoteCount').prop('lastChild').nodeValue = '${UpVoteCount + 1}'
+                                    $('#upVoteCount').prop('lastChild').nodeValue = d.isUpVote
                                 } else {
                                     $("#myUpVote").attr("class","icon-report")
-                                    $('#upVoteCount').prop('lastChild').nodeValue = '${UpVoteCount - 1}'
+                                    $('#upVoteCount').prop('lastChild').nodeValue = d.isUpVote
                                 }
                             }
                         })
@@ -411,13 +411,13 @@ function showReplog(articleId) {
                             dataType:"json",
                             type:"post",
                             success:function (d) {
-                                if (d) {
+                                if (d.boo) {
                                     //d是true的时候表示前后台的is值相同,
                                     $("#myUpVote").attr("class","icon-feedback1")
-                                    $('#upVoteCount').prop('lastChild').nodeValue = '${UpVoteCount + 1}'
+                                    $('#upVoteCount').prop('lastChild').nodeValue = d.isUpVote
                                 } else {
                                     $("#myUpVote").attr("class","icon-report")
-                                    $('#upVoteCount').prop('lastChild').nodeValue = '${UpVoteCount - 1}'
+                                    $('#upVoteCount').prop('lastChild').nodeValue = d.isUpVote
                                 }
                             }
                         })
