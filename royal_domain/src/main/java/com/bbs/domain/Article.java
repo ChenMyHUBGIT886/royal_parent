@@ -34,7 +34,6 @@ public class Article implements Serializable {
     private Integer upvoteCount; //点赞数
     private Integer browseCount; //浏览数
     private Integer zoneId;//所在交流区
-//    private String zoneIdStr;
     private Zone zone;
 
     public Zone getZone() {
@@ -55,6 +54,7 @@ public class Article implements Serializable {
     public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
     }
+
     public String getSendTimeStr() {
         sendTimeStr = DateUtils.date2String(sendTime, "yyyy-MM-dd HH-mm-ss");
         return sendTimeStr;
@@ -173,22 +173,6 @@ public class Article implements Serializable {
         this.isReport = isReport;
     }
 
-//    public String getZoneIdStr() {
-//        if (zoneId == 1) {
-//            zoneIdStr = "综合交流区";
-//        } else if (zoneId == 2) {
-//            zoneIdStr = "BUG反馈区";
-//        } else if (zoneId == 3) {
-//            zoneIdStr = "新闻公告区";
-//        } else if (zoneId == 4) {
-//            zoneIdStr = "活动专区";
-//        }
-//        return zoneIdStr;
-//    }
-//
-//    public void setZoneIdStr(String zoneIdStr) {
-//        this.zoneIdStr = zoneIdStr;
-//    }
 
 
     @Override
@@ -207,8 +191,8 @@ public class Article implements Serializable {
                 ", upvoteCount=" + upvoteCount +
                 ", browseCount=" + browseCount +
                 ", zoneId=" + zoneId +
-                ", zone=" + zone +
                 ", isReport=" + isReport +
+                ", zone=" + zone +
                 ", comments=" + comments +
                 '}';
     }

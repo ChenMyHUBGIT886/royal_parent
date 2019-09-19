@@ -81,7 +81,15 @@
                 <li class="floor clearfix">
                     <div class="floorer-info l">
                         <div class="floorer-photo"><img src=${article.userInfo.picUrl}></div>
-                        <div class="floorer-name">${article.senderName}</div>
+                        <c:if test="${article.userInfo.role == 3}">
+                            <div style="margin-left: 30px;color: red" class="floorer-name">${article.userInfo.userName}  <span style="color: crimson ;background: yellow ; margin-left: 15px">管理员</span> </div>
+                        </c:if>
+                        <c:if test="${article.userInfo.role == 2}">
+                            <div style="margin-left: 60px;color: red" class="floorer-name">${article.userInfo.userName}</div>
+                        </c:if>
+                        <c:if test="${article.userInfo.role == 1}">
+                            <div style="margin-left: 60px" class="floorer-name">${article.userInfo.userName} </div>
+                        </c:if>
                     </div>
                     <div class="floor-con l">
                         <div class="floor-info clearfix">
@@ -108,7 +116,17 @@
                 <li class="floor clearfix">
                     <div class="floorer-info l">
                         <div class="floorer-photo"><img src=${comment.userInfo.picUrl}></div>
-                        <div class="floorer-name">${comment.userInfo.userName}</div>
+
+                        <c:if test="${comment.userInfo.role == 3}">
+                            <div style="margin-left: 30px;color: red" class="floorer-name">${comment.userInfo.userName}  <span style="color: crimson ;background: yellow ; margin-left: 15px">管理员</span> </div>
+                        </c:if>
+                        <c:if test="${comment.userInfo.role == 2}">
+                            <div style="margin-left: 60px;color: red" class="floorer-name">${comment.userInfo.userName}</div>
+                        </c:if>
+                        <c:if test="${comment.userInfo.role == 1}">
+                            <div style="margin-left: 60px" class="floorer-name">${comment.userInfo.userName} </div>
+                        </c:if>
+
                     </div>
                     <div class="floor-con l">
                         <div class="floor-info clearfix">

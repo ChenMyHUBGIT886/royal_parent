@@ -56,15 +56,15 @@
                                     </th>
                                     <th>
                                         <input type="text" id="title" class="form-control"
-                                               name="title" value="${condition.title}">
-                                        <%--<input type="hidden" id="pageNum" name="pn" value="">--%>
+                                               name="title" value="">
+                                        <input type="hidden" id="pageNum" name="pn" value="">
                                     </th>
                                     <th>
                                         <label for="article_sendername" class="control-label">创帖人:</label>
                                     </th>
                                     <th>
                                         <input type="text" id="article_sendername" class="form-control"
-                                               name="senderName" value="${condition.senderName}">
+                                               name="senderName" value="">
                                     </th>
                                     <th colspan="2">
                                         <input type="submit" value="查询" class="form-control btn-primary">
@@ -135,9 +135,9 @@
                             <!--上一页-->
                             <li>
                                 <c:if test="${pageInfo.hasPreviousPage}">
-                                        <a href="#" onclick="searchArticle('${pageInfo.pageNum-1}')" aria-label="Previous">
-                                            <span aria-hidden="true">«</span>
-                                        </a>
+                                    <a href="#" onclick="searchArticle('${pageInfo.pageNum-1}')" aria-label="Previous">
+                                        <span aria-hidden="true">«</span>
+                                    </a>
                                 </c:if>
                             </li>
 
@@ -166,22 +166,70 @@
             </div>
         </div><!-- /.dept_info -->
         <!-- 尾部-->
-        <%@ include file="commom/foot.jsp"%>
+        <%@ include file="commom/foot.jsp" %>
+
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">帖子信息详情</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal article_detail_form">
+                            <div class="form-group">
+                                <label for="detail_title" class="col-sm-2 control-label">标题</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" rows="3" name="title" id="detail_title"
+                                              disabled></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="detail_content" class="col-sm-2 control-label">内容</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" rows="3" name="content" id="detail_content"
+                                              disabled></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
     </div><!-- /.hrms_dept_body -->
 
 </div><!-- /.hrms_dept_container -->
 
 <%--<%@ include file="ArticleAdd.jsp"%>--%>
-<%@ include file="ArticleUpdate.jsp"%>
+<%@ include file="ArticleUpdate.jsp" %>
 
 <script>
     function searchArticle(data) {
-        location.href="${pageContext.request.contextPath}/article/findByPage.do?pageNum="+data+"&pageSize=5";
+        location.href = "${pageContext.request.contextPath}/article/findByPage.do?pageNum=" + data + "&pageSize=5";
     }
 
-    $(".articleTr").dblclick(function () {
-        alert("帖子详情");
-    })
+    function Detail(articleId) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/article/findByIdManager.do",
+            type: "GET",
+            data: {"articleId": articleId},
+            contentType: "application/json;charset=UTF-8",
+            success: function (d) {
+                $('#myModal').modal();
+                $("#detail_title").html(d.title);
+                $("#detail_content").html(d.content);
+            }
+        })
+    }
+
+
 </script>
 </body>
 </html>

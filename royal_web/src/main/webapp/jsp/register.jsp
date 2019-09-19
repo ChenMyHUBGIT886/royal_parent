@@ -67,7 +67,7 @@
                             <div class="reg-c">
                                 <input type="password" id="uPass" name="userPass" class="txt"/>
                             </div>
-                            <span id="spanPass" class="tips">密码长度必须6~10位的英文或数字</span>
+                            <span id="spanPass" class="tips">密码长度必须3~10位的英文或数字</span>
                         </li>
                         <li class="no-tips">
                             <div class="reg-l">&nbsp;&nbsp;邮&nbsp;&nbsp;&nbsp;箱：</div>

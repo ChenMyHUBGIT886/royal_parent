@@ -34,8 +34,8 @@
             <div class="hm-bbs-info-in l" style="margin-left:30px;">
                 <div class="t clearfix"><h2 class="l">王者荣耀</h2></div>
                 <p>
-                    <span>今日帖子<strong>99</strong></span>
-                    <span>全部帖子<strong>250</strong></span>
+                    <span>今日帖子<strong>${count}</strong></span>
+                    <span>全部帖子<strong>${sumCount}</strong></span>
                 </p>
             </div>
             <div class="search-box l">
@@ -48,18 +48,19 @@
 
 
         <!-- 导航 -->
-        <ul class="hm-bbs-nav border-lrb clearfix">
+        <ul  class="hm-bbs-nav border-lrb clearfix">
             <c:forEach items="${zoneList}" var="zone" varStatus="status">
 
                 <c:if test="${zone.zoneId==articleList[0].zoneId}">
                     <li class="current">
-                        <a href="${pageContext.request.contextPath}/article/findByZoneId.do?zoneId=${zone.zoneId}"><em></em>${zone.zoneName}</a>
+                        <a  href="${pageContext.request.contextPath}/article/findByZoneId.do?zoneId=${zone.zoneId}"><em></em>${zone.zoneName}</a>
+                        <input id="zoneID" type="hidden" value="${zone.zoneId}">
                     </li>
                 </c:if>
 
                 <c:if test="${zone.zoneId!=articleList[0].zoneId}">
                     <li>
-                        <a href="${pageContext.request.contextPath}/article/findByZoneId.do?zoneId=${zone.zoneId}"><em></em>${zone.zoneName}</a>
+                        <a  href="${pageContext.request.contextPath}/article/findByZoneId.do?zoneId=${zone.zoneId}"><em></em>${zone.zoneName}</a>
                     </li>
                 </c:if>
 
@@ -141,14 +142,15 @@
 
 <!-- 右边发帖，回顶部 -->
 <div class="fixedBar" id="j_fixedBar">
-    <a id="newTopicBtn" href="javascript:;" class="newTopic"><span></span>发帖</a>
+    <c:if test="${not empty user}">
+    <a id="newTopicBtn" href="javascript:;" onclick="showLoginZ()" class="newTopic"><span></span>发帖</a>
+    </c:if>
     <a href="#" class="goTop"><i></i><span>返回<br/>顶部</span></a>
 </div>
 
 <!-- 发帖弹出框 -->
-<form action="${pageContext.request.contextPath}/article/save.do" method="post" >
-    <input type="hidden" name="senderName" value="${userInfo.userName}">
-    <input type="hidden" name="zoneId" value="${zone.zoneId}">
+<form id="formZ" action="${pageContext.request.contextPath}/article/save.do" method="post" >
+    <input type="hidden" name="senderName" value="${user.userName}">
     <div class="pop-box ft-box">
         <div class="mask"></div>
         <div class="win">
@@ -173,5 +175,13 @@
 </form>
 
 </body>
+<script>
+
+function showLoginZ() {
+    var zoneID =  $("#zoneID").val()
+    $("#formZ").append("<input type='hidden' name='zoneId' value="+zoneID+">")
+}
+
+</script>
 
 </html>

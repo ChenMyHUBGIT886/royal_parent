@@ -23,7 +23,7 @@ public class WordServiceImpl implements WordService {
      * @return
      */
     @Override
-    public List<Word> findByPage(int pageNum, int pageSize) {
+    public List<Word> findByPage(int pageNum, int pageSize) throws Exception {
         PageHelper.startPage(pageNum, pageSize);
         return wordDao.findAll();
     }
@@ -34,9 +34,25 @@ public class WordServiceImpl implements WordService {
      * @param word
      */
     @Override
-    public void addWord(String word) {
+    public void addWord(String word) throws Exception {
         if (word != "") {
             wordDao.addWord(word);
         }
+    }
+
+    @Override
+    public List<String> findByWordStatus() {
+        return wordDao.findByWordStatus();
+    }
+
+    /**
+     * 敏感词启用和禁用
+     *
+     * @param wordId
+     * @param status
+     */
+    @Override
+    public void changeStatus(Integer wordId, Integer status) {
+        wordDao.changeStatus(wordId, status);
     }
 }

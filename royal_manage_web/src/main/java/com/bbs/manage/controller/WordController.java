@@ -44,10 +44,27 @@ public class WordController {
      * @param word
      */
     @RequestMapping("/addWord.do")
-    public ModelAndView addWord(@RequestParam(name = "word", required = true) String word) {
+    public ModelAndView addWord(String word) throws Exception {
         ModelAndView mv = new ModelAndView();
         wordService.addWord(word);
         mv.setViewName("WordPage");
         return mv;
+    }
+
+    /**
+     * 敏感词启用和禁用
+     *
+     * @param wordId
+     * @param status
+     * @param pageNum
+     * @return
+     */
+    @RequestMapping("/changeStatus.do")
+    public String changeStatus(
+            @RequestParam(name = "wordId", required = true) Integer wordId,
+            @RequestParam(name = "status", required = true) Integer status,
+            @RequestParam(name = "pageNum", required = true) Integer pageNum) throws Exception {
+        wordService.changeStatus(wordId, status);
+        return "redirect:findByPage.do?pageNum=" + pageNum;
     }
 }

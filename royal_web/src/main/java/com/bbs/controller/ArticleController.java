@@ -8,10 +8,14 @@ import com.bbs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/article")
@@ -36,6 +40,16 @@ public class ArticleController {
     public ModelAndView findByZoneId(Integer zoneId) {
         List<Article> list = articleService.findByZoneId(zoneId);
         ModelAndView mv = new ModelAndView();
+        List<UserInfo> userList = userService.findAllLoginStatus();
+        mv.addObject("userStatusList",userList);
+        //全部帖数
+    List<Article> list1 = articleService.findAll();
+    Integer  sumCount=list1.size();
+    mv.addObject("sumCount",sumCount);
+    //今日帖数
+    List<Article> list2=articleService.findByTime();
+    Integer  count=list2.size();
+    mv.addObject("count",count);
     List<UserInfo> userList = userService.findAllLoginStatus();
     mv.addObject("userStatusList",userList);
         mv.addObject("articleList",list);
@@ -49,7 +63,7 @@ public class ArticleController {
 //         ModelAndView mv = new ModelAndView();
 //         mv.addObject("article",article1);
 //         mv.setViewName("getArticle");
-        return "getArticle?articleId="+article1.getArticleId();
+        return "redirect:/article/getArticle.do?articleId="+article1.getArticleId();
     }
 
 
@@ -78,6 +92,15 @@ public class ArticleController {
         mv.addObject("article",article);
         mv.setViewName("getArticle");
         return mv;
+    }
+    //查询发送总数
+    @RequestMapping("findCount.do")
+    @ResponseBody
+    public Map<String,Integer> findCount(@RequestParam("userName")String userName){
+        Integer aticleCount=articleService.findCount(userName);
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("msg",aticleCount);
+        return map;
     }
 
 }

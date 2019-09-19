@@ -69,9 +69,11 @@ public class ArticleController {
      * @return
      */
     @RequestMapping("/deleteArticle.do")
-    public String deleteArticle(@RequestParam(name = "id", required = true) Integer articleId) {
+    public String deleteArticle(
+            @RequestParam(name = "id", required = true) Integer articleId,
+            @RequestParam(name = "pageNum", required = true) Integer pageNum) throws Exception {
         articleService.deleteArticle(articleId);
-        return "redirect:findByPage.do";
+        return "redirect:findByPage.do?pageNum=" + pageNum;
     }
 
     /**
@@ -81,11 +83,9 @@ public class ArticleController {
      * @return
      */
     @RequestMapping("/findByIdManager.do")
-    public void findByIdManager(Integer articleId, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Article article = articleService.findByIdManager(articleId);
-        request.getSession().setAttribute("article", article);
-        System.out.println(article);
-
+    public @ResponseBody
+    Article findByIdManager(Integer articleId) throws Exception {
+        return articleService.findByIdManager(articleId);
     }
 
     /*条件查询*/
