@@ -13,6 +13,22 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/getArticle.css"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/hm-bbs.js"></script>
+    <style>
+        <%--空心--%>
+        .floor-con .icon-report i {
+            background-position: 0px 0px;
+        }
+        <%--实心--%>
+        .floor-con .icon-feedback1 i {
+            background-position: -112px -32px;
+        }
+
+        .floor-con .icon-comment, .floor-con .icon-feedback, .floor-con .icon-report, .floor-con .icon-feedback1 {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+        }
+    </style>
 </head>
 <body>
 
@@ -36,7 +52,7 @@
                     <h2 class="l">${article.title}</h2>
                     <div class="hm-detail-fun l">
 					     <span class="icon-like">
-					         <a href="#"><i></i>${article.upvoteCount}</a>
+					         <a href="#" id="upVoteCount"><i></i>${UpVoteCount}</a>
 					     </span>
                         <span class="icon-talk">
 						     <i></i>${article.replyCount}
@@ -96,13 +112,18 @@
 
 
                         <%--<img src="../images/qw.png" id="myUpVote">--%>
-                        <span class="hm-detail-fun l">
-                            <span class="icon-like" id="myUpVote"><a href="#"><i></i>点赞</a></span>
-                        </span>
+                        <%--<span class="hm-detail-fun l">--%>
+                            <%--<span class="icon-like" id="myUpVote"><a href="javascript:void(0)"><i></i>点赞</a></span>--%>
+                            <%--<span class="icon-comment" id="myReport"><a href="#" onclick="showReplog(${article.articleId})"><i></i>举报</a></span>--%>
+                        <%--</span>--%>
 
                         <span>
-
-                            <span class="icon-comment"><a href="#comment"> <i></i> 评论</a></span>
+                            <span id="myUpVote" class="icon-report" style="right: 150px"><a
+                                    href="javascript:void(0)"> <i></i> 点赞</a></span>
+                            <span class="icon-report"><a href="javascript:void(0)" onclick="showReplog()"> <i></i> 举报</a></span>
+                            <span class="icon-comment" style="right: 80px"><a
+                                    href="javaScript:inspect()"> <i></i> 评论</a></span>
+                            <%--<span class="icon-comment"><a href="#comment"> <i></i> 评论</a></span>--%>
                         </span>
 
                     </div>
@@ -206,6 +227,31 @@
     </div>
 </form>
 
+<!-- 举报弹出框 -->
+<%--<form action="${pageContext.request.contextPath}/report/saveReportInfoByIdAndValue.do" method="post">--%>
+    <%--<div class="pop-box ft-box">--%>
+        <%--<div class="mask"></div>--%>
+        <%--<div class="win">--%>
+            <%--<div class="win_hd">--%>
+                <%--<h4 class="l">举报本贴</h4>--%>
+                <%--<span class="close r">&times;</span>--%>
+            <%--</div>--%>
+            <%--<div class="win_bd">--%>
+                <%--<div class="win_bd_b">--%>
+                    <%--<textarea id="reportContent" name="reportContent" placeholder="举报内容限于400字以内"></textarea>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="win_ft">--%>
+                <%--<div class="win_ft_in">--%>
+                    <%--&lt;%&ndash;<input type="submit" class="btn" value="举报" id="btn_submit"/>&ndash;%&gt;--%>
+                    <%--<input type="button" class="btn" value="举报" id="btn_submit"/>--%>
+                    <%--<input type="hidden" id="articleId4Report" name="articleId4Report"/>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+<%--</form>--%>
+
 
 <div class="fixedBar" id="j_fixedBar">
     <a href="#comment" class="newTopic"><span></span>回复</a>
@@ -218,16 +264,59 @@
 <script type="text/javascript">
 //弹出回复框
 function showDialog(num, commentId) {
-	var loginUser = "${loginUser}";
-	if(!loginUser){
-		alert("请登录");
+	if(${empty user}){
+		alert("请登录才能回复");
 		return;
 	}
-	$("#commentId").val(commentId);
+	// $("#commentId").val(commentId);
     $('.pop-box').css('display', 'block');
-    $("#floorSpan").html(num);
+    // $("#floorSpan").html(num);
 }
 
+//弹出举报框
+function showReplog(articleId) {
+    //没有用户登录的时候
+    if(${empty user}){
+        alert("请登录");
+        return;
+    }
+    //有用户登录的时候发送ajax根据回调函数返回值
+    // 判断是否是自己的帖子（根据登录用户的名字和帖子id去数据库查是否有此帖子对象）
+    $.ajax({
+        url:"${pageContext.request.contextPath}/article/getReportByIdAndName.do",
+        data:{"articleId":"${article.articleId}"},
+        dataType:"json",
+        type:"post",
+        // contentType:"application/text;charset=UTF-8",
+        success:function(d) {
+            if(d) {
+                alert("不能举报自己的帖子~")
+            } else{
+                $("#articleId4Report").val(${article.articleId});
+                $('.pop-box').css('display', 'block');
+                // $("#floorSpan").html(num);
+                // $("#btn_submit").click(function () {
+                //     alert("举报提交成功")
+                // })
+                $("#btn_submit").click(function() {
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/report/saveReportInfoByIdAndValue.do",
+                        // contentType:"application/json;charset=UTF-8",
+                        <%--data: '{"upvoteUserName": "${userbaojia.userName}", "upvoteArticleId": ${comment.articleId}, "isUpvote": 0}',--%>
+                        data:{"reportContent":$("#reportContent").val(),"articleId4Report":$("#articleId4Report").val()},
+                        dataType:"json",
+                        type:"post",
+                        success:function (d) {
+                            // alert(d.isUpvote)
+                            alert("举报成功..")
+                            location.reload()
+                        }
+                    })
+                })
+            }
+        }
+    })
+}
 </script>
 
 <script>
@@ -237,40 +326,40 @@ function showDialog(num, commentId) {
         //  a.没有用户登录的时候，点击爱心按钮就提示先登录
         if (${empty sessionScope.user}) {
             $("#myUpVote").click(function () {
+                <%--$('#upVoteCount').prop('lastChild').nodeValue = '${UpVoteCount}'--%>
                 alert("请先登录~")
             })
         } else {
-            // alert("有用户登录")
+            <%--alert("有用户登录")--%>
             <%--alert("${upvote.upvoteArticleId}")--%>
             //b.有用户登录的时候，判断upvote对象是否有值
             //a:没有值的时候，爱心显示空心，点击爱心发送ajax请求到后台保存upvote对象到upvote表中
             //最后刷新页面
-            if (${empty upvote.upvoteUserName}) {
+            if (${empty upvote}) {
                 $("#myUpVote").click(function () {
-                    // alert("无值的时候")
                     $.ajax({
                         url: "${pageContext.request.contextPath}/upVote/saveByBean.do",
                         contentType:"application/json;charset=UTF-8",
-                        data: '{"upvoteUserName": "${user.userName}", "upvoteArticleId": ${comment.articleId}, "isUpvote": 1}',
+                        data: '{"upvoteUserName": "${user.userName}", "upvoteArticleId": ${article.articleId}, "isUpvote": 1}',
                         dataType: "json",
                         type: "post",
                         success: function (d) {
                             // alert("ajax成功")
-                            $("#myUpVote").attr("class","icon-liked")
+                            $("#myUpVote").attr("class","icon-feedback1")
                             location.reload()
                         }
                     })
                 })
             }
             //当有值的时候
-            else if (${not empty upvote.upvoteUserName}) {
+            else if (${not empty upvote}) {
                 // alert("有值的时候")
                 <%--alert("当前值为：${upvote.isUpvote}")--%>
                 //a:判断isupvote是否为1，为1的时候说明已点赞，爱心显示实心，再次点赞爱心便变回空心，发送ajax到后台
                 //         根据登录用户和帖子编号更新upvote表中isupvote的值，最后刷新页面
                 if (${upvote.isUpvote == 1}) {
                     // alert("isupvote为1的时候")
-                    $("#myUpVote").attr("class","icon-liked")
+                    $("#myUpVote").attr("class","icon-feedback1")
                     $("#myUpVote").click(function() {
                         // alert("按钮被点击了")
                         $.ajax({
@@ -281,8 +370,8 @@ function showDialog(num, commentId) {
                             dataType:"json",
                             type:"post",
                             success:function (d) {
-                                alert(d.isUpvote)
-                                $("#myUpVote").attr("class","icon-like")
+                                // alert(d.isUpvote)
+                                $("#myUpVote").attr("class","icon-report")
                                 location.reload()
                             }
                         })
@@ -303,7 +392,7 @@ function showDialog(num, commentId) {
                             type:"post",
                             success:function (d) {
                                 // alert(d.isUpvote)
-                                $("#myUpVote").attr("class","icon-liked")
+                                $("#myUpVote").attr("class","icon-feedback1")
                                 location.reload()
                             }
                         })

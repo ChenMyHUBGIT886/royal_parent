@@ -17,22 +17,15 @@ public class UpVoteController {
     //从ajax处获取到请求参数，传递到后台保存
     @RequestMapping("/saveByBean.do")
     public @ResponseBody UpVote saveByBean (@RequestBody UpVote upVote) {
-        System.out.println("controller 进来了");
-        System.out.println(upVote);
-        upVoteService.saveByBean(upVote);
-        System.out.println("save method go");
-        return upVote;
 
+        upVoteService.saveByBean(upVote);
+        return upVote;
     }
 
     //从ajax处获取到请求参数，传递到后台更新点赞状态
     @RequestMapping("/changeIsUpvote.do")
     public @ResponseBody UpVote changeIsUpvote (@RequestBody UpVote upVote) {
-        System.out.println("controller go");
-        System.out.println(upVote);
         upVoteService.changeIsUpvote(upVote);
-        System.out.println("update model go");
         return upVote;
-
     }
 }

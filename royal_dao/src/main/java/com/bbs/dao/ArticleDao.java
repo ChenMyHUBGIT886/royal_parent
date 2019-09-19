@@ -1,11 +1,9 @@
 package com.bbs.dao;
 
 import com.bbs.domain.Article;
+import com.bbs.domain.UpVote;
 import com.bbs.domain.UserInfo;
 import org.apache.ibatis.annotations.*;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
 
 import java.util.List;
 
@@ -47,6 +45,20 @@ public interface ArticleDao {
     void save(Article article);
 
 
+
     @Select("select * from bbs_article_table where articleId=#{articleId}")
     Article findById(Integer articleId);
+
+
+    @Select("select * from bbs_upvote_table where upvoteUserName = #{userName} and upvoteArticleId = #{articleId}")
+    UpVote getUpVoteByArticleIdAndUserName(@Param(value = "articleId")Integer articleId, @Param(value = "userName")String userName);
+
+    @Select("select sum(isUpvote) from bbs_upvote_table where upvoteArticleId = #{articleId}")
+    Integer getUpVoteCountByArticleId(Integer articleId);
+
+    @Update("update bbs_article_table set upvoteCount = #{upVoteCount} where articleId =#{articleId}")
+    void setArticleUpVoteCount(@Param(value = "articleId")Integer articleId, @Param(value = "upVoteCount")Integer upVoteCount);
+
+    @Select("select * from bbs_article_table where articleId = #{articleId} and senderName = #{userName}")
+    Article getReportByIdAndName(@Param(value = "articleId")Integer articleId, @Param(value = "userName")String userName);
 }

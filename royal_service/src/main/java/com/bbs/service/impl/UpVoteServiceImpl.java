@@ -20,4 +20,9 @@ public class UpVoteServiceImpl implements UpVoteService {
     public void changeIsUpvote(UpVote upVote) {
         upVoteDao.changeIsUpvote(upVote);
     }
+
+    @Override
+    public Integer getUpVoteCount(Integer upvoteArticleId) {
+        return upVoteDao.getUpVoteCount(upvoteArticleId);
+    }
 }

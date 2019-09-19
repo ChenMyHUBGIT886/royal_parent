@@ -83,7 +83,7 @@
                                      <span class="post-time">${article.sendTimeStr}</span>
                                  </div>
                                  <div class="hm-index-fun r">
-                                     <span class="icon-like"><i></i>1</span>
+                                     <span class="icon-like"><i></i>${article.upvoteCount}</span>
                                      <span class="icon-talk"><i></i>0</span>
                                  </div>
                              </li>
