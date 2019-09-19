@@ -12,9 +12,9 @@ public interface ZoneDao {
 
     /**
      * 根据zoneId查找zone
-     * @param id
+     * @param zoneId
      * @return
      */
-    @Select("select * from bbs_zone_table where zoneId=#{id}")
-     Zone findById(int id) throws Exception;
+    @Select("select * from bbs_zone_table where zoneId=#{zoneId}")
+     Zone findById(Integer zoneId) throws Exception;
 }

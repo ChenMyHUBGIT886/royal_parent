@@ -56,15 +56,15 @@
                                     </th>
                                     <th>
                                         <input type="text" id="title" class="form-control"
-                                               name="title" value="">
-                                        <input type="hidden" id="pageNum" name="pn" value="">
+                                               name="title" value="${condition.title}">
+                                        <%--<input type="hidden" id="pageNum" name="pn" value="">--%>
                                     </th>
                                     <th>
                                         <label for="article_sendername" class="control-label">创帖人:</label>
                                     </th>
                                     <th>
                                         <input type="text" id="article_sendername" class="form-control"
-                                               name="senderName" value="">
+                                               name="senderName" value="${condition.senderName}">
                                     </th>
                                     <th colspan="2">
                                         <input type="submit" value="查询" class="form-control btn-primary">
@@ -93,23 +93,23 @@
                     </thead>
                     <tbody>
                         <c:forEach items="${pageInfo.list}" var="article">
-                            <tr class="articleTr">
-                                <td width="15%">标题</td>
+                            <tr >
+                                <td width="15%">${article.title}</td>
                                 <td width="30%" class="line-limit-length">${article.content}</td>
                                 <td width="5%" class="line-limit-length">${article.senderName}</td>
                                 <td width="5%" class="line-limit-length">${article.isTopStr}</td>
                                 <td width="5%">${article.replyCount}</td>
                                 <td width="5%">${article.upvoteCount}</td>
                                 <td width="5%">${article.browseCount}</td>
-                                <td width="15%">${article.zoneIdStr}</td>
+                                <td width="15%">${article.zone.zoneName}</td>
                                 <td width="15%">
                                     <%--<a href="/article/deleteArticle.do?id=${article.articleId}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-primary">屏蔽</a>--%>
                                     <a href="${pageContext.request.contextPath}/article/deleteArticle.do?id=${article.articleId}" role="button" class="btn btn-primary">删除</a>
                                     <c:if test="${article.isTop==0}">
-                                        <a href="${pageContext.request.contextPath}/article/changeStatus.do?id=${article.articleId}&isTop=1" role="button" class="btn btn-danger" >置顶</a>
+                                        <a href="${pageContext.request.contextPath}/article/changeStatus.do?id=${article.articleId}&isTop=1&page=${pageInfo.pageNum}&title=${condition.title}&senderName=${condition.senderName}" role="button" class="btn btn-danger" >置顶</a>
                                     </c:if>
                                     <c:if test="${article.isTop==1}">
-                                        <a href="${pageContext.request.contextPath}/article/changeStatus.do?id=${article.articleId}&isTop=0" role="button" class="btn btn-info" >取消</a>
+                                        <a href="${pageContext.request.contextPath}/article/changeStatus.do?id=${article.articleId}&isTop=0&page=${pageInfo.pageNum}&title=${condition.title}&senderName=${condition.senderName}" role="button" class="btn btn-info" >取消</a>
                                     </c:if>
                                 </td>
                             </tr>

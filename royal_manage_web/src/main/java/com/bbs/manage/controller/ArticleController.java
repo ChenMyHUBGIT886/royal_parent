@@ -52,11 +52,14 @@ public class ArticleController {
      * @param isTop
      */
     @RequestMapping("/changeStatus.do")
-    public String changeStatus(
+    public String changeStatus(int page,Article article,
             @RequestParam(name = "id", required = true) Integer articleId,
             @RequestParam(name = "isTop", required = true) Integer isTop) {
+        String title = article.getTitle();
+        System.out.println(title);
+        String senderName = article.getSenderName();
         articleService.changeStatus(articleId, isTop);
-        return "redirect:findByPage.do";
+        return "redirect:findByCondition.do?page="+page+"&title="+title+"&senderName="+senderName;
     }
 
     /**
@@ -87,13 +90,13 @@ public class ArticleController {
 
     /*条件查询*/
     @RequestMapping("/findByCondition.do")
-    public String findByCondition( Article article, Model model,
+    public String findByCondition( Article articleInfo, Model model,
                                    @RequestParam(name = "page",defaultValue = "1")int page,
                                    @RequestParam(name = "size",defaultValue = "5")int size)throws Exception{
-        List<Article> list=articleService.findByCondition(article,page, size);
+        List<Article> list=articleService.findByCondition(articleInfo,page, size);
         PageInfo pageInfo=new PageInfo(list);
-        model.addAttribute("articleMsgs",pageInfo);
-        model.addAttribute("condition",article);
+        model.addAttribute("pageInfo",pageInfo);
+        model.addAttribute("condition",articleInfo);
         return "ArticlePage";
     }
 }

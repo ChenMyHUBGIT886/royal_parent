@@ -103,10 +103,24 @@ public interface ArticleDao {
 
     //模糊查询
     /*条件查询*/
-    @Select("<script>"+"select * from bbs_article_table where 1=1"
-            + " <if test='title != 0 and title != null'> and title like concat('%',#{title},'%')</if> "
-            +"<if test='senderName != 0 and senderName != null'> and senderName like concat('%',#{senderName},'%')</if> "
-            +"</script>")
-    @ResultMap("map")
-    List<Article> findByCondition(Article article);
+//    @Select("<script>"+"select * from bbs_article_table where and title like concat('%',#{title},'%')"
+////            + " <if test='title != 0 and title != null'> </if> "
+//            +"<if test='senderName != 0 and senderName != null'> and senderName like concat('%',#{senderName},'%')</if> "
+//            +"</script>")
+
+    @Select("<script>select * from bbs_article_table where 1=1 <if test=\"title !=null \">and title like '%${title}%' </if> <if test=\"senderName !=null \">and senderName like '%${senderName}%' </if></script>")
+    @Results({
+            @Result(id = true, column = "articleId", property = "articleId"),
+            @Result(column = "title", property = "title"),
+            @Result(column = "content", property = "content"),
+            @Result(column = "sendTime", property = "sendTime"),
+            @Result(column = "senderName", property = "senderName"),
+            @Result(column = "isTop", property = "isTop"),
+            @Result(column = "replyCount", property = "replyCount"),
+            @Result(column = "upvoteCount", property = "upvoteCount"),
+            @Result(column = "browseCount", property = "browseCount"),
+            @Result(column = "isReport", property = "isReport"),
+            @Result(column = "zoneId", property = "zone",one = @One(select = "com.bbs.dao.ZoneDao.findById"))
+    })
+    List<Article> findByCondition(@Param("title") String title,@Param("senderName") String senderName);
 }

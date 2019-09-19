@@ -118,15 +118,13 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> findByCondition(Article article, int page, int size) {
-        String senderName = article.getSenderName();
-        String title = article.getTitle();
-        if(senderName==null){
-            senderName="";
-        }
-        article.setSenderName(senderName.trim());
-        article.setTitle(title.trim());
+    public List<Article> findByCondition(Article articleInfo, int page, int size) {
+
+        articleInfo.setSenderName(articleInfo.getSenderName().trim());
+        articleInfo.setTitle(articleInfo.getTitle().trim());
+        String senderName = articleInfo.getSenderName();
+        String title = articleInfo.getTitle();
         PageHelper.startPage(page, size);
-        return articleDao.findByCondition(article);
+        return articleDao.findByCondition(title,senderName);
     }
 }
