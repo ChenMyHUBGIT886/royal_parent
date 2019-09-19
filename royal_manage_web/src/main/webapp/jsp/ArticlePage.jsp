@@ -6,9 +6,9 @@
 
 </head>
 <style type="text/css">
-    html, body {
-        overflow: auto;
-        height: 100%;
+    html,body{
+        overflow:auto;
+        height:100%;
     }
 
     .line-limit-length {
@@ -26,19 +26,19 @@
 <body>
 <div class="hrms_dept_container">
     <!-- 导航栏-->
-    <%@ include file="commom/head.jsp" %>
+    <%@ include file="commom/head.jsp"%>
 
 
     <!-- 中间部分（左侧栏+表格内容） -->
     <div class="hrms_dept_body">
         <!-- 左侧栏 -->
-        <%@ include file="commom/leftsidebar.jsp" %>
+        <%@ include file="commom/leftsidebar.jsp"%>
 
         <!-- 表格内容 -->
         <div class="dept_info col-sm-10">
             <div class="panel panel-success">
                 <!-- 路径导航 -->
-                <div>
+                <div >
                     <ol class="breadcrumb">
                         <li><a href="#">用户帖管理</a></li>
                         <li class="active">帖子信息</li>
@@ -92,31 +92,28 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${pageInfo.list}" var="article">
-                        <tr class="articleTr" ondblclick="Detail('${article.articleId}')">
-                            <td width="15%">${article.title}</td>
-                            <td width="30%" class="line-limit-length">${article.content}</td>
-                            <td width="5%" class="line-limit-length">${article.senderName}</td>
-                            <td width="5%" class="line-limit-length">${article.isTopStr}</td>
-                            <td width="5%">${article.replyCount}</td>
-                            <td width="5%">${article.upvoteCount}</td>
-                            <td width="5%">${article.browseCount}</td>
-                            <td width="15%">${article.zone.zoneName}</td>
-                            <td width="15%">
+                        <c:forEach items="${pageInfo.list}" var="article">
+                            <tr >
+                                <td width="15%">${article.title}</td>
+                                <td width="30%" class="line-limit-length">${article.content}</td>
+                                <td width="5%" class="line-limit-length">${article.senderName}</td>
+                                <td width="5%" class="line-limit-length">${article.isTopStr}</td>
+                                <td width="5%">${article.replyCount}</td>
+                                <td width="5%">${article.upvoteCount}</td>
+                                <td width="5%">${article.browseCount}</td>
+                                <td width="15%">${article.zone.zoneName}</td>
+                                <td width="15%">
                                     <%--<a href="/article/deleteArticle.do?id=${article.articleId}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-primary">屏蔽</a>--%>
-                                <a href="${pageContext.request.contextPath}/article/deleteArticle.do?id=${article.articleId}&pageNum=${pageInfo.pageNum}"
-                                   role="button" class="btn btn-primary">删除</a>
-                                <c:if test="${article.isTop==0}">
-                                    <a href="${pageContext.request.contextPath}/article/changeStatus.do?id=${article.articleId}&isTop=1&pageNum=${pageInfo.pageNum}"
-                                       role="button" class="btn btn-danger">置顶</a>
-                                </c:if>
-                                <c:if test="${article.isTop==1}">
-                                    <a href="${pageContext.request.contextPath}/article/changeStatus.do?id=${article.articleId}&isTop=0&pageNum=${pageInfo.pageNum}"
-                                       role="button" class="btn btn-info">取消</a>
-                                </c:if>
-                            </td>
-                        </tr>
-                    </c:forEach>
+                                    <a href="${pageContext.request.contextPath}/article/deleteArticle.do?id=${article.articleId}" role="button" class="btn btn-primary">删除</a>
+                                    <c:if test="${article.isTop==0}">
+                                        <a href="${pageContext.request.contextPath}/article/changeStatus.do?id=${article.articleId}&isTop=1&page=${pageInfo.pageNum}&title=${condition.title}&senderName=${condition.senderName}" role="button" class="btn btn-danger" >置顶</a>
+                                    </c:if>
+                                    <c:if test="${article.isTop==1}">
+                                        <a href="${pageContext.request.contextPath}/article/changeStatus.do?id=${article.articleId}&isTop=0&page=${pageInfo.pageNum}&title=${condition.title}&senderName=${condition.senderName}" role="button" class="btn btn-info" >取消</a>
+                                    </c:if>
+                                </td>
+                            </tr>
+                        </c:forEach>
                     </tbody>
                 </table>
 

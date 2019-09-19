@@ -20,7 +20,7 @@
                 <span class="glyphicon glyphicon-cloud" aria-hidden="true">用户帖管理</span>
             </a>
             <ul class="nav nav-pills nav-stacked">
-                <li role="presentation"><a href="${pageContext.request.contextPath}/article/findByPage.do?pageNum=1&pageSize=5" >帖子信息</a></li>
+                <li role="presentation"><a href="${pageContext.request.contextPath}/article/findByCondition.do?page=1&size=4&title=&senderName=" >帖子信息</a></li>
             </ul>
             <ul class="nav nav-pills nav-stacked">
                 <li role="presentation"><a href="${pageContext.request.contextPath}/word/findByPage.do?pageNum=1&pageSize=5" >敏感词汇管理</a></li>

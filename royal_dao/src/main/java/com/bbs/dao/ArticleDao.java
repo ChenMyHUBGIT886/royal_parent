@@ -106,6 +106,7 @@ public interface ArticleDao {
     })
     Article findLikeComment(@Param("articleId") Integer articleId);
 
+
     @Update("update bbs_article_table set replyCount = #{replyCount+1}")
     void addReplyCount(Integer replyCount);
 
@@ -115,14 +116,24 @@ public interface ArticleDao {
 
     //模糊查询
     /*条件查询*/
-    @Select("<script>"+"select * from bbs_article_table where 1=1"
-            + " <if test='title != 0 and title != null'> and title like concat('%',#{title},'%')</if> "
-            +"<if test='senderName != 0 and senderName != null'> and senderName like concat('%',#{senderName},'%')</if> "
-            +"</script>")
-    @ResultMap("map")
-    List<Article> findByCondition(Article article);
-    @Select("SELECT * FROM bbs_article_table where sendTime>'2019-09-19 00:00:00' AND sendTime<'2019-10-20 23:59:59'")
-    List<Article> findByTime();
-    @Select("select count(*) from bbs_article_table where senderName=#{userName}")
-    Integer findCount(String userName);
+//    @Select("<script>"+"select * from bbs_article_table where and title like concat('%',#{title},'%')"
+////            + " <if test='title != 0 and title != null'> </if> "
+//            +"<if test='senderName != 0 and senderName != null'> and senderName like concat('%',#{senderName},'%')</if> "
+//            +"</script>")
+
+    @Select("<script>select * from bbs_article_table where 1=1 <if test=\"title !=null \">and title like '%${title}%' </if> <if test=\"senderName !=null \">and senderName like '%${senderName}%' </if></script>")
+    @Results({
+            @Result(id = true, column = "articleId", property = "articleId"),
+            @Result(column = "title", property = "title"),
+            @Result(column = "content", property = "content"),
+            @Result(column = "sendTime", property = "sendTime"),
+            @Result(column = "senderName", property = "senderName"),
+            @Result(column = "isTop", property = "isTop"),
+            @Result(column = "replyCount", property = "replyCount"),
+            @Result(column = "upvoteCount", property = "upvoteCount"),
+            @Result(column = "browseCount", property = "browseCount"),
+            @Result(column = "isReport", property = "isReport"),
+            @Result(column = "zoneId", property = "zone",one = @One(select = "com.bbs.dao.ZoneDao.findById"))
+    })
+    List<Article> findByCondition(@Param("title") String title,@Param("senderName") String senderName);
 }
