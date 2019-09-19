@@ -13,4 +13,7 @@ public interface WordDao {
 
     @Insert("insert into bbs_word_table(word,status) values(#{word},1)")
     void addWord(String word);
+
+    @Select("select word from bbs_word_table where status = 1")
+    List<String> findByWordStatus();
 }

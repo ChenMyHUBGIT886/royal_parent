@@ -36,8 +36,8 @@ public class ArticleController {
     public ModelAndView findByZoneId(Integer zoneId) {
         List<Article> list = articleService.findByZoneId(zoneId);
         ModelAndView mv = new ModelAndView();
-    List<UserInfo> userList = userService.findAllLoginStatus();
-    mv.addObject("userStatusList",userList);
+        List<UserInfo> userList = userService.findAllLoginStatus();
+        mv.addObject("userStatusList",userList);
         mv.addObject("articleList",list);
         mv.setViewName("index");
         return mv;
@@ -46,10 +46,7 @@ public class ArticleController {
     public  String save(Article article){
         articleService.save(article);
         Article article1=articleService.findById(article.getArticleId());
-//         ModelAndView mv = new ModelAndView();
-//         mv.addObject("article",article1);
-//         mv.setViewName("getArticle");
-        return "getArticle?articleId="+article1.getArticleId();
+        return "redirect:/article/getArticle.do?articleId="+article1.getArticleId();
     }
 
 

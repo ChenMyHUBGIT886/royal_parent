@@ -43,9 +43,11 @@
 
         <!-- 导航 -->
         <ul class="hm-bbs-nav border-lrb clearfix">
-            <li class="current">
-                <div style="width: 945px"><span style="float: right ; margin-right:410px; font-size: 30px ">搜索结果</span></div>
-            </li>
+            <a href="${pageContext.request.contextPath}/zone/findAll.do">
+                <i class="hm-ico-home"></i>首页
+                <span style="float: right ; margin-right:410px; font-size: 30px ">搜索结果</span>
+            </a>
+
         </ul>
 
         <!-- 主体部分 -->
@@ -88,7 +90,6 @@
                                 </div>
                             </li>
                         </c:if>
-
                     </c:forEach>
                 </ul>
                 </div>

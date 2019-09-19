@@ -39,4 +39,9 @@ public class WordServiceImpl implements WordService {
             wordDao.addWord(word);
         }
     }
+
+    @Override
+    public List<String> findByWordStatus() {
+        return wordDao.findByWordStatus();
+    }
 }

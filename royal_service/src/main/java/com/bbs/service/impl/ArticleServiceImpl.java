@@ -3,12 +3,16 @@ package com.bbs.service.impl;
 import com.bbs.dao.ArticleDao;
 import com.bbs.domain.Article;
 import com.bbs.domain.Comment;
+import com.bbs.domain.Reply;
+import com.bbs.domain.Word;
 import com.bbs.service.ArticleService;
 import com.bbs.service.CommentService;
+import com.bbs.service.WordService;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,6 +22,8 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleDao articleDao;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private WordService wordService;
 
     @Override
     public List<Article> findAll() {
@@ -26,12 +32,20 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<Article> findByZoneId(Integer zoneId) {
-        return articleDao.findByZoneId(zoneId);
+        List<Article> articleList = articleDao.findByZoneId(zoneId);
+       List<String> wordList = wordService.findByWordStatus();
+        List<Article> articles = filtrationWord(articleList, wordList);
+        return articles;
     }
 
     @Override
     public Article getArticle(Integer articleId) {
-        return articleDao.getArticle(articleId);
+        Article article = articleDao.getArticle(articleId);
+        ArrayList<Article> arrayList = new ArrayList<>();
+        arrayList.add(article);
+        List<String> wordList = wordService.findByWordStatus();
+        List<Article> articles = filtrationWord(arrayList, wordList);
+        return articles.get(0);
     }
 
     @Override
@@ -47,7 +61,6 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Article findById(Integer articleId) {
         Article article=articleDao.findById(articleId);
-
         return article;
     }
 
@@ -116,4 +129,57 @@ public class ArticleServiceImpl implements ArticleService {
     public Article findByIdManager(Integer articleId) {
         return articleDao.findByIdManager(articleId);
     }
+
+
+    public List<Article> filtrationWord( List<Article> articleList ,List<String> wordList){
+        if (articleList != null && wordList !=null) {
+            for (Article article : articleList) {
+                String title = article.getTitle();
+                for (String word : wordList) {
+                    if (title.contains(word)) {
+                       article.setTitle(title.replace(word,"***"));
+                    }
+                }
+
+                String content = article.getContent();
+                for (String word : wordList) {
+                    if (content.contains(word)) {
+                        article.setContent(content.replace(word,"***"));
+                    }
+                }
+
+
+                List<Comment> comments = article.getComments();
+                if (comments != null) {
+                    for (Comment comment : comments) {
+                        String commentContent = comment.getCommentContent();
+                        for (String word : wordList) {
+                            if (commentContent.contains(word)) {
+                                comment.setCommentContent(commentContent.replace(word,"***"));
+                            }
+                        }
+
+
+                        List<Reply> replyList = comment.getReplyList();
+                        if (replyList != null) {
+                            for (Reply reply : replyList) {
+                                for (String word : wordList) {
+                                    String replyContent = reply.getReplyContent();
+                                    if (replyContent.contains(word)) {
+                                        reply.setReplyContent(replyContent.replace(word,"***"));
+                                    }
+                                }
+                            }
+                        }
+                        comment.setReplyList(replyList);
+                    }
+                }
+                article.setComments(comments);
+            }
+        }
+
+        return articleList;
+    }
+
+
 }

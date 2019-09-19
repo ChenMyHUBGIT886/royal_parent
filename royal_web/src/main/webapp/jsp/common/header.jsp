@@ -22,7 +22,7 @@
                     <a href="${pageContext.request.contextPath}/user/logout.do">注销</a>
                 </c:if>
                 <c:if test="${empty user}">
-                    <a href="jsp/register.jsp">【新用户注册】</a>
+                    <a href="/jsp/register.jsp">【新用户注册】</a>
                 </c:if>
                 <div id="dialogBg"></div>
                 <div id="dialog" class="animated">
